@@ -1,0 +1,104 @@
+<%-include('../partials/adminheader') %>
+
+<div class="row px-0 m-0">
+  <div class="col-md-2 sidebar " id="sidenav"  style="height: 100vh;">
+    <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+      <ul class="list-unstyled ">
+        <li class="">
+          <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/category">Categories</a>
+        </li>
+        <hr>
+        <li class="">
+          <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/products">products</a>
+        </li>
+        <hr>
+        <li class="">
+          <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/customers">customers</a>
+        </li>
+        <hr>
+        <li class="">
+          <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
+        </li>
+        <hr>
+      </ul>
+    </div>
+  </div>
+  <div class="col bg-primary-subtle">
+    <section>
+    <!-- order details customer details shipping address  -->
+  <div class="container bg-light py-2 mt-5">
+    <h2 class="py-3">Order ID :<%= order_detail._id.toString().slice(-6) %></h2>
+    <div class="row ">
+    <div class="col">
+      <h5 class="">Customer details</h5>
+     
+      <ul class="list-unstyled">
+            <li>Name : <%= user.userName %></li>
+            <li>Phone Number : <%= user.phone_number %></li>
+            <li>Email : <%= user.email %></li>
+    </ul>
+    </div>
+    <div class="col">
+      <h5 class="">Order details</h5>
+      <ul class="list-unstyled">
+        <li>Order ID : <%= order_detail._id.toString().slice(-6) %></li>
+        <li>Order Date : <%= order_detail.date.toLocaleDateString('en-GB') %></li>
+        <li>Total Price : <%= order_detail.totalPrice %></li>
+        <li></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h5 class="">Shipping address</h5>
+      <ul class="list-unstyled">
+        <li><%= `${address.fullName}, ${address.mobile}, ` %></li>
+        <li><%= ` ${address.street}, ${address.village}, ${address.city}`%></li>
+        <li><%= `Near ${address.landmark}, PIN Code: ${address.pinCode}`%></li>
+      </ul>
+    </div>
+    </div>
+  </div>
+  
+      <!-- Ordered product table -->
+      <div class="container bg-light py-5">
+        <h5 class="pb-4">Products Details</h5>
+        <form action="/upload" method="post" enctype="multipart/form-data" >
+          <table class="table ">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">quantity</th>
+                <th scope="col">price</th>
+              </tr>
+            </thead>
+      
+            <tbody>
+              <% products.forEach((data) => { %>
+                  <tr>
+                    <td>
+                    
+                        <!-- <img src="\<%= data.images %>" alt="Product Image" style="width: 50px; height: 50px;"> -->
+                        <img src="\<%= data.productId.images[0] %>" alt="Product Image" style="width: 50px; height: 50px;">
+                    </td>
+                      <td><%= data.productId.name %></td>
+                      <td><%= data.quantity %></td>
+                      <td id="totalPrice"><%= data.quantity * data.productId.price %></td>
+                      
+                  </tr>
+              <% }); %>
+          </tbody>
+      
+          </table>
+  </form>
+  
+     
+      
+      </div>
+     
+    </section>
+  </div>
+</div>
+ 
+
+
+  <script src="/static/js/admin/product.js"></script>

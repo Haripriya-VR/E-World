@@ -1,0 +1,40 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.main-content {
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    background-color:#D5E6E5;
+}
+
+.otp-container {
+    background-color:#ac8ec9;
+    border-radius: 5px;
+}
+
+.input {
+    height: 3em;
+    width: 3em;
+    border: 2px solid #dad9df;
+    outline: none;
+    text-align: center;
+    font-size: 1.5em;
+    border-radius: 0.3em;
+    background-color: #ffffff;
+    outline: none;
+    /*Hide number field arrows*/
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.otp-btn{
+    height: 1em;
+    width: 10em;
+}

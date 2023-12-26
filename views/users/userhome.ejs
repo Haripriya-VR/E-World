@@ -1,0 +1,156 @@
+<%-include('../partials/userheader') %>
+  <!-- banner -->
+  <!-- Banner Section -->
+  <div class="container-fluid banner-container">
+    <div class="banner-text">
+
+      <h1 class="fw-bold text-dark mx-5 ">Find the Best Home Appliances <br/> & Digital Products</h1>
+      <h2 class="fw-bold text-dark mx-5">E-World</h2>
+      <div class="banner-button">
+        <a href="#" class=" mx-5 text-decoration-none text-dark fw-bold">Shop Now</a>
+      </div>
+    </div>
+    <div class="banner-image">
+      <img style="width: 100%; height: 450px; border-radius: 0.1875rem 0.1875rem 0rem 14.25rem;"
+        src="static/images/f3c93174b555cb4200f8dc0c64fc6b65.png" />
+      <!-- <img src="/static/images/image2-removebg-preview.png" alt="Banner Image"> -->
+    </div>
+  </div>
+
+
+
+  <div class="container-fluid body-content">
+
+    <!-- banner sub text -->
+    <div class="banner-sub row m-auto">
+      <div class="col text-center pt-5 fw-bold">Free Shipping</div>
+      <div class="col text-center pt-5 fw-bold">We are available 24/7</div>
+
+      <div class="col text-center pt-5 fw-bold">Satisfied return</div>
+
+      <div class="col text-center pt-5 fw-bold">100% Secure payments</div>
+    </div>
+
+    <!-- cards and products -->
+
+    <div class="product-section">
+
+      <div class="best selling">
+        <div class="header-text fs-4 fw-bold mx-5 px-5 py-5">Best Selling</div>
+
+
+        <div class="container product-cards">
+          <div class="row">
+            <!-- cards -->
+            <% products.slice(0, 4).forEach(product=> { %>
+              <div class="col-md-3 mb-4">
+                <div class="card card-products h-100">
+                  <div class="card-body d-flex flex-column shadow">
+
+                    <a href="/product-details/<%= product._id %>">
+                      <img src="<%= product.images %>" class="card-img-top" alt="Product Image">
+                    </a>
+
+                    <div class="card-text flex-grow-1">
+                      <h5 class="card-title fw-bold mt-2">
+                        <%= product.name %>
+                      </h5>
+                    </div>
+                    <p class="card-text mt-3 fw-bold">Price: <%= product.price %>
+                    </p>
+                    <div>
+                      <button class="cart-button btn-block mt-3 add-to-cart-button"
+                        data-product-id="<%= product._id %>">Add To Cart</button>
+                      <a href="#" class="ms-2"><i class="fa-solid fa-heart fa-xl" style="color: #4b1c70;"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% });%>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="today's deal">
+        <div class="header-text fs-4 fw-bold mx-5 px-5 py-5">Today's Deal</div>
+
+        <div class="container product-cards">
+          <div class="row">
+            <!-- cards -->
+            <% products.slice(0, 4).forEach(product=> { %>
+              <div class="col-md-3 mb-4">
+                <div class="card card-products h-100">
+                  <div class="card-body d-flex flex-column shadow">
+                    <img src="<%= product.images %>" class="card-img-top" alt="Product Image">
+                    <div class="card-text flex-grow-1">
+                      <h5 class="card-title fw-bold mt-2">
+                        <%= product.name %>
+                      </h5>
+                    </div>
+                    <p class="card-text mt-3 fw-bold">Price: <%= product.price %>
+                    </p>
+                    <div>
+                      <button class="cart-button btn-block mt-3 add-to-cart-button"
+                        data-product-id="<%= product._id %>">Add To Cart</button>
+                      <a href="#" class="ms-2"><i class="fa-solid fa-heart fa-xl" style="color: #4b1c70;"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }); %>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.add-to-cart-button').forEach(button => {
+      button.addEventListener('click', function (event) {
+
+        const productId = this.getAttribute('data-product-id');
+
+
+        $.ajax({
+          url: '/addtocart/' + productId,
+          method: 'POST',
+          success: function (response) {
+
+            // alert('Product added to cart');
+            // swal("", "Product is added to cart", "success");
+            // updateCartQuantity();
+            if (response) {
+              console.log('response',response);
+              const count = document.getElementById("cartQuantity");
+              const currentCount = parseInt(count.innerHTML);
+
+              // Update the cart quantity on the page
+              count.innerHTML = currentCount + response.cartQuantity;
+
+              console.log('count here',count.innerHTML);
+              swal("", "Product is added to cart", "success");
+            }
+          },
+          error: function (error) {
+            console.log('Error adding product to cart:', error);
+          }
+        });
+      });
+    });
+
+
+
+
+    
+
+    // function updateCartQuantity() {
+    //   console.log("i got here cart quantity");
+    //   var cartquantity = <%- cartQuantity %>
+    // }
+  </script>
+

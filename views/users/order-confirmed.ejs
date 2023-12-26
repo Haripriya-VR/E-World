@@ -1,0 +1,83 @@
+<%-include('../partials/userheader') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center text-success">Order Confirmed</h3>
+            <% if (orders?.length > 0) { %>
+                <% orders.forEach(item => { %>
+                  <ul class="list-unstyled">
+                    <h5>Order Details</h5>
+                    <li>Order Date:<%= item.date.toLocaleDateString('en-GB') %></li>
+                    <li>Order Id: <%= item._id %> </li>
+                    <li>Amount: <%= item.totalPrice %></li>
+                    <li>Payment Method: <%= item.paymentMethod %> </li>
+                  </ul>
+                  <hr>
+                  <ul class="list-unstyled">
+                    <h5>Address</h5>
+                    <li> <%= item.address.fullName %></li>
+                    <li> <%= item.address.mobile %> </li>
+                    <li> <%= item.address.street %>,<%= item.address.city %></li>
+                    <li>Pincode: <%= item.address.pinCode %> </li>
+                    <li>District: <%= item.address.district %></li>
+                  </ul>
+                <% }); %>
+              <% } %>
+              <hr>
+        <div class="col pt-3">
+            <h5>Products</h5>
+            <table class="table  table-hover">
+                <thead>
+                  <tr >
+                    <th scope="col">PRODUCT</th>
+                    <th scope="col">QUANTITY</th>
+                    <th scope="col">Total</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <%
+                  if (products?.length > 0) {
+                    products.forEach(item => {
+              %>
+                      <tr>
+                          <td>
+                           <div class="product-container d-flex">
+                           
+                              <img src="\<%= item.productId.images[0] %>" class="card-img-top" alt="Product Image" style="width: 50px; height: 50px;" >
+                            
+                            <div>
+                              <%= item.productId.name %> <br> <%= item.productId.price %>
+                            </div>
+                           </div>
+                          </td>
+                          <td>
+                           
+                            <span id="quantity_<%= item.productId._id %>" class="text-dark"><%= item.quantity %></span>
+                            
+                            
+                          </td>
+                        
+                          <td id="totalPrice"><%= item.quantity * item.productId.price %></td>
+                         
+                          
+                      </tr>
+              <%
+                      });
+                  } else {
+              %>
+                      <tr>
+                          <td colspan="4">No item found in cart</td>
+                      </tr>
+              <%
+                  }
+              %>
+             
+
+
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>

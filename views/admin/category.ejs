@@ -1,0 +1,140 @@
+<%-include('../partials/adminheader') %>
+
+  <div class="row px-0 m-0">
+    <div class="col-md-2 sidebar " id="sidenav" style="height: 100vh;">
+      <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+        <ul class="list-unstyled ">
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/category">Categories</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/products">products</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/customers">customers</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
+          </li>
+          <hr>
+        </ul>
+      </div>
+    </div>
+    <div class="col bg-primary-subtle" style="height: 100vh;">
+      <section>
+        <div class="container d-flex ">
+          <div class="d-flex mt-3">
+            <h2>Category Manegement</h2>
+          </div>
+          <div class="search-content-admin d-flex m-auto   border- rounded-pill">
+            <form action="/admin/category/search" method="post">
+              <input type="text" class="search px-5" placeholder="Search category" name="search">
+              <button type="submit" class="search-btn"><i class="fa fa-search fa-xl"></i></button>
+            </form>
+          </div>
+          <div class="d-flex justify-content-end my-3">
+            <button class="btn btn-success"><a href="/admin/addcategory" class="text-decoration-none text-white">Add
+                category</a></button>
+          </div>
+        </div>
+        <div class="container-fluid py-2">
+          <form action="/upload" method="post" enctype="multipart/form-data">
+            <table class="table">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Category</th>
+                  <th scope="col">product</th>
+                  <th scope="col">edit</th>
+                  <th scope="col">status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% categories.forEach((data)=> { %>
+                  <tr>
+                    <td>
+                      <%= data.category %>
+                    </td>
+                    <td>
+                      <%=data.productCount%>
+                    </td>
+                    <td><a href="/admin/edit-category/<%= data._id %>"><i class="fas fa-pen-to-square"></i></a></td>
+                    <% if (data.status) { %>
+                      <td><a href="/admin/category-deactivate/<%= data._id %>" class="text-decoration-none"
+                          style="color: green;">list</a></td>
+
+                      <% } else { %>
+                        <td><a href="/admin/category-activate/<%= data._id %>" class="text-decoration-none"
+                            style="color: red;">unlist</a></td>
+                        <% } %>
+
+                  </tr>
+                  <% }); %>
+              </tbody>
+
+            </table>
+          </form>
+          </form>
+          <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+            <ul class="pagination">
+              <% if (page> 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= page - 1 %>&limit=8" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <% } else { %>
+                  <li class="page-item disabled">
+                    <span class="page-link" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </span>
+                  </li>
+                  <% } %>
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                      <li class="page-item <%= page === i ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>&limit=8">
+                          <%= i %>
+                        </a>
+                      </li>
+                      <% } %>
+                        <% if (page < totalPages) { %>
+                          <li class="page-item">
+                            <a class="page-link" href="?page=<%= page + 1 %>&limit=8" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                            </a>
+                          </li>
+                          <% } else { %>
+                            <li class="page-item disabled">
+                              <span class="page-link" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </span>
+                            </li>
+                            <% } %>
+
+            </ul>
+          </nav>
+        </div>
+
+      </section>
+    </div>
+  </div>
+
+
+  <script src="/static/js/admin/product.js"></script>
+
+  <!-- <script>
+  // nav open and close
+  function Nav() {
+      
+      if (document.getElementById("sidenav").style.width == '0px') {
+      document.getElementById("sidenav").style.width = "250px";
+  } else {
+     document.getElementById("sidenav").style.width = '0px'
+  }
+}
+
+
+</script> -->

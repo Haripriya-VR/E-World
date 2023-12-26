@@ -1,0 +1,148 @@
+<%-include('../partials/userheader') %>
+<body style=" background-color: #D5E6E5;">
+
+   <div class="container">
+    <div class="row">
+        <div class="col-lg-8 pt-3">
+            <table class="table table-secondary table-hover">
+                <thead>
+                  <tr >
+                    <th scope="col">PRODUCT</th>
+                    <th scope="col">QUANTITY</th>
+                    <th scope="col">Total</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%
+                  if (products?.length > 0) {
+                    products.forEach(item => {
+              %>
+                      <tr>
+                          <td>
+                           <div class="product-container d-flex">
+                           
+                              <img src="\<%= item.productId.images[0] %>" class="card-img-top" alt="Product Image" style="width: 50px; height: 50px;" >
+                            
+                            <div>
+                              <%= item.productId.name %> <br> <%= item.productId.price %>
+                            </div>
+                           </div>
+                          </td>
+                          <td>
+                            <i class="fa-solid fa-chevron-up fa-rotate-270" onclick="quantityChanger('<%= item.productId._id %>', -1,'<%= cart._id %>')" style="color: #140a0a;"></i>
+                            <span id="quantity_<%= item.productId._id %>" class="text-dark"><%= item.quantity %></span>
+                            <i class="fa-solid fa-chevron-up fa-rotate-90" onclick="quantityChanger('<%= item.productId._id %>', 1, '<%= cart._id %>', '<%= item.productId.quantity %>')" style="color: #130909;"></i>
+
+                          </td>
+                        
+                          <td id="totalPrice"><%= item.quantity * item.productId.price %></td>
+                         
+                          <td><a href="/delete-cart/<%= item._id %>"><i class="fa-solid fa-trash-can" style="color: #d13a15;"></i></a></td>
+                      </tr>
+              <%
+                      });
+                  } else {
+              %>
+                      <tr>
+                          <td colspan="4">No item found in cart</td>
+                      </tr>
+              <%
+                  }
+              %>
+             
+
+
+                </tbody>
+              </table>
+        </div>
+        <div class="col">
+            <h5 class="fw-bold ms-2 my-2">Discount coupons</h5>
+            <form action="#" method="post" class="ms-2 b">
+               <div class="d-flex ">
+                <input type="text" placeholder="coupon code" class="coupon-input w-50 rounded-start">
+               <button class="couppon-input-btn  px-4 py-2 bg-info fw-bold rounded-end">Apply</button>
+               <div id="coupon-message" class="coupon-message"></div>
+               </div>
+            </form>
+
+            <div class="container py-4">
+                <button class="btn btn-danger w-75 my-3 ">Show Available Coupons</button>
+                <div class="cart-total me-5">
+                    <h6>CART TOTAL</h6>
+                    <ul class="list-unstyled">
+                        <li class="pt-2 d-flex justify-content-between">
+                            Subtotal <span class="text-dark">₹<%= cartTotal %></span>
+                        </li>
+                        <li class="pt-2 d-flex justify-content-between">
+                            Coupon Discount <span class="text-dark">₹ 0</span>
+                        </li>
+                        <li class="pt-2 d-flex justify-content-between">
+                            Total <span class="text-dark">₹ <%= cartTotal %></span>
+                        </li>
+                    </ul>
+                   <a href="/checkout"> <button class="btn btn-info fw-bold w-100">Proceed To Checkout</button></a>
+                </div>
+                
+                
+            </div>
+        </div>
+       
+    </div>
+    
+    
+   </div>
+</body>
+
+<script>
+  function quantityChanger(productId, count, cartId, productQuantity) {
+    var quantityElement = document.getElementById("quantity_" + productId);
+    var currentQuantity = parseInt(quantityElement.innerText, 10);
+    console.log('current qunatity',currentQuantity);
+
+    if( currentQuantity >= productQuantity ){
+      alert("Out of stock! Cannot increase quantity.");
+                  
+      quantityElement.innerText = currentQuantity - 1;
+    }
+    else if (count === 1 ) {
+        currentQuantity += 1;
+        quantityElement.innerText = currentQuantity;
+        console.log("count increased...");
+    } else if (count === -1 && currentQuantity > 1) {
+        currentQuantity -= 1;
+        quantityElement.innerText = currentQuantity;
+        console.log("count decreased...");
+    }
+
+    $.ajax({
+        url: '/updatequantity',
+        method: 'POST',
+        data: {
+            productId: productId,
+            quantity: currentQuantity,
+            cartId: cartId,
+        },
+        success: function (response) {
+            if (response.success) {
+                    window.location.reload();
+                    console.log("Response from the server:", response.totalPrice);
+                }
+             else {
+                // Handle error response, if needed
+                console.error("Error from the server:", response.error);
+            }
+        },
+    });
+    console.log("updated quantity successfully");
+}
+
+</script>
+
+
+
+
+
+
+
+

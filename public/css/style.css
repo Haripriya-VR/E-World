@@ -1,0 +1,183 @@
+  @import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;500&display=swap');
+
+  * {
+      font-family: 'Frank Ruhl Libre', serif;
+      
+  }
+ .body-content{
+    background-color: #D5E6E5;
+ }
+
+  .navbar-brand {
+      font-weight: 800;
+  }
+
+  span {
+      color: #ffffff;
+  }
+
+  .navbar {
+      background-color: #4B1C70;
+      display: flex;
+      align-items: center;
+  }
+
+ .search-container form ,.search,button {
+   background-color: #ffffff;
+   border: none;
+   outline: none;
+   
+}
+.nav-item-list{
+    color: #ffffff  ;
+}
+
+.user-login {
+    width: 4.2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    border-radius: 6.25rem;
+    border: 3px solid #CE33BF;
+    background: #4B1C70;
+}
+
+/* banner section */
+
+.banner-container {
+    background: #AB79D3; /* Purple background color */
+    height: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+  }
+
+  .banner-text {
+    max-width: 60%;
+  }
+
+  .banner-text h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+
+  .banner-button {
+    margin-top: 20px;
+  }
+
+  .banner-button a {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #CE33BF; 
+  }
+
+  .banner-image {
+    max-width: 50%;
+  }
+
+  .banner-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+/* try */
+
+.banner-container{
+    height: 450px;
+    width: 100%;
+    background-color:#d9d9d9
+}
+.images-banner{
+    object-fit: cover;
+}
+.center {
+    display: block;
+    margin-left: auto;
+  }
+.banner-sub  {
+    width: 70.1875rem;
+    height: 7.9375rem;
+    background-color: #A67AD3;
+}
+.vertical {
+    border-left: 1px solid black;
+    height: 6rem;
+    position:absolute;
+    left: 30%;
+}
+.bg-dark{
+    background-color: aqua;
+}
+
+.carosel-image{
+    height: 200px;
+}
+/* cards */
+
+.card-products{
+    width: 250px;
+    height: 416px;
+    border-radius: 10px;
+}
+
+.cart-button{
+    color: white;
+    font-size: 15px;
+    font-family: 'Frank Ruhl Libre', sans-serif;
+    font-weight: 900;
+    word-wrap: break-word;
+    background-color:#A67AD3;
+    height: 2.1em;
+    width: 10em;
+    border-radius: 100px;
+}
+.cart-button:hover{
+    background-color:#551b81;
+}
+
+
+/* sign up */
+
+.signup-content{
+    height:600px;
+    width: 70%;
+    margin: auto;
+    background-color:#ac8ec9;
+   
+}
+.image-container{
+    background-color: aliceblue;
+
+}
+.input-control input:focus{
+    outline: 0;
+}
+
+.input-control.sucess input {
+    border-color: green;
+}
+.input-control.error input{
+    border-color:red;
+}
+.error{
+    color: rgb(163, 12, 12);
+}
+
+.input-box{
+    width: 70%;
+    margin: auto;
+}
+.btn1   {
+    padding: 10px 20px 10px 20px;
+    background-color:#4B1C70;
+    border-radius: 4px;
+    border: none;
+    font-weight: 600;
+    width: 100%;
+    
+}
+.btn1:hover{
+   background-color:#551b81;
+}

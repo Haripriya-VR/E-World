@@ -1,0 +1,26 @@
+.miniheader{
+    height: 2em;
+    background-color: #E4C1ED;
+}
+
+.cart-total{
+    padding: 3em;
+    background-color: #d6d6d6;
+    
+}
+.coupon-input{
+    outline: none;
+    border: none;
+}
+
+
+
+/* checkout styles */
+
+.order-container{
+    background-color: #d6d6d6;
+}
+.input-box{
+    width: 40%;
+    margin: auto;
+}

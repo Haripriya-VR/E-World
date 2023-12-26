@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-world</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/products.css">
+  <link rel="stylesheet" href="/static/css/cart.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<main-section>
+  <div class="container-fluid px-0 py-0">
+    <nav class="navbar">
+      <a class="navbar-brand px-4" href="/"><span>E-World</span></a>
+      <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+        <ul class=" list-inline  list-unstyled">
+          <li class="nav-item list-inline-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item list-inline-item">
+            <a class="nav-link active" aria-current="page" href="/products">products</a>
+          </li>
+          <li class="nav-item list-inline-item">
+            <a class="nav-link active" aria-current="page" href="#">contact us</a>
+          </li>
+        </ul>
+      </div>
+      <div class="search-container d-flex m-auto border- rounded-pill">
+        <form action="">
+          <input type="text" class="search px-5 " placeholder="Search products" name="search">
+          <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+        </form>
+      </div>
+      <div class="mx-4 ">
+        <% if (login) { %>
+          <button class="user-login"><a href="/logout" class="text-decoration-none text-white">Logout</a></button>
+          <% } else { %>
+            <button class="user-login"><a href="/login" class="text-decoration-none text-white">Login</a></button>
+            <% } %>
+
+
+              <a href="/wishlist"> <i class="fa-regular fa-heart text-white px-3"></i></a>
+              <a href="/cart"> <span class="badge p-1 text-bg-secondary" id="cartQuantity">
+                  <%= cartQuantity %>
+                </span><i class="fa-solid fa-cart-shopping text-white ps-1 pe-2"></i></a>
+              <a href="/profile"> <i class="fa-solid fa-user text-white px-3"></i></a>
+
+      </div>
+  </div>
+  </nav>
+  </div>
+
+
+
+</main-section>
+
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+<!--sweet alert link  &&  jquery library -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script> -->

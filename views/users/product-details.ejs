@@ -1,0 +1,102 @@
+<%-include('../partials/userheader') %>
+
+<style>
+    .productnumber-input{
+        width: 40px;
+        border: #4b1c70;
+    }
+</style>
+<!-- single product detail page -->
+<body  style=" background-color: #D5E6E5;">
+    
+    <div class="small-container">
+        <div class="row">
+          
+            <% product_details.forEach(product => { %>
+                <div class="col m-auto">
+                    <div class="d-flex ps-5 " >
+                        <img src="\<%= product.images[0] %>" height="300" alt="<%= product.name %>" srcset="" >
+                    </div>
+                    <div class="thumbnail-container ps-3 d-flex">
+                        <% product_details[0].images.slice(1).forEach((image, index) => { %>
+                            <img src="\<%= image %>" height="50" alt="<%= product_details[0].name %>" srcset="" class="thumbnail" data-index="<%= index + 1 %>">
+                        <% }); %>
+                    </div>
+                </div>
+                <div class="col">
+                    <h1><%= product.name %></h1>
+                    <h4> Rs : <%= product.price %></h4>
+                    <h5><%= product.description %></h5>
+                    <input type="number" value="1" class="productnumber-input"oninput="validateNumberInput(this)">
+                    <div>
+                        <button type="button" class="cart-button btn-block mt-3">Add to Cart</button>
+                        <a href="#" class="ms-2"><i class="fa-solid fa-heart fa-xl" style="color:#A67AD3;"></i></a>
+                    </div>
+                </div>
+            <% }); %>
+            
+        </div>
+    </div>
+    
+    <br><hr>
+    <div class="row">
+        <h2>Related Products</h2>
+        <div class="container product-cards">
+            <div class="row">
+              <!-- cards -->
+              <% products.slice(0, 4).forEach(product => { %>
+                <div class="col-md-3 mb-4">
+                  <div class="card card-products h-100">
+                    <div class="card-body d-flex flex-column shadow">
+               
+                      <a href="/users/single-product/<%= product._id %>">
+                        <img src="\<%= product.images[0] %>" class="card-img-top" alt="Product Image">
+                      </a>
+                      
+                      <div class="card-text flex-grow-1">
+                        <h5 class="card-title fw-bold mt-2"><%= product.name %></h5>
+                      </div>
+                      <p class="card-text mt-3 fw-bold">Price: <%= product.price %></p>
+                      <div>
+                        <button type="button" class="cart-button btn-block mt-3">Add to Cart</button>
+                        <a href="#" class="ms-2"><i class="fa-solid fa-heart fa-xl" style="color: #4b1c70;"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+    </div>
+</div>
+</body>
+
+<!-- script for thumbnail -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const mainImage = document.getElementById("mainImage");
+    const thumbnails = document.querySelectorAll(".thumbnail");
+
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener("click", () => {
+            const newIndex = thumbnail.getAttribute("data-index");
+            mainImage.src = product_details[0].images[newIndex];
+        });
+    });
+});
+
+
+// validate input product number adding
+
+function validateNumberInput(input) {
+    // Parse the input value as an integer
+    const value = parseInt(input.value, 10);
+
+    // Check if the value is negative or 0
+    if (value <= 0 || isNaN(value)) {
+        // If negative or 0, set the input value to 1
+        input.value = 1;
+    }
+}
+
+</script>

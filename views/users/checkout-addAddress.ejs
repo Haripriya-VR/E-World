@@ -1,0 +1,84 @@
+<%-include('../partials/userheader') %>
+
+
+  <body>
+    <div class="container-fluid shadow main-content ">
+      <div class="  product-content shadow my-2 d-flex">
+        <div class="container signup-details">
+          <h2 class="fw-bold text-dark text-center pt-2">Add Address</h2>
+          <form action="/checkout-addAddress" method="post" id="form">
+            <div class="form-group input-control input-box pt-2 ">
+                <!-- name -->
+              <label for="username"> Full Name:</label>
+              <input type="text" id="username" name="username" class="form-control" required>
+              <div class="error"></div>
+            </div>
+            <!-- phone number -->
+            <div class="form-group input-control input-box pt-2 ">
+                <label for="phone_number">Phone Number : </label>
+                <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+                <div class="error"></div>
+              </div>
+              <!-- street name -->
+              <div class="form-group input-control input-box pt-2 ">
+                <label for="street_name">Street Name : </label>
+                <input type="text" id="street_name" name="street_name" class="form-control" required>
+                <div class="error"></div>
+              </div>
+               <!-- village -->
+               <div class="form-group input-control input-box pt-2 ">
+                <label for="village">Village : </label>
+                <input type="text" id="village" name="village" class="form-control" required>
+                <div class="error"></div>
+              </div>
+               <!-- City -->
+               <div class="form-group input-control input-box pt-2 ">
+                <label for="city">City : </label>
+                <input type="text" id="city" name="city" class="form-control" required>
+                <div class="error"></div>
+              </div>
+               <!-- pincode -->
+               <div class="form-group input-control input-box pt-2 ">
+                <label for="pincode">Pin Code: </label>
+                <input type="text" id="pincode" name="pincode" class="form-control" required>
+                <div class="error"></div>
+              </div>
+               <!-- landmark-->
+               <div class="form-group input-control input-box pt-2 ">
+                <label for="landmark">Land Mark : </label>
+                <input type="text" id="landmark" name="landmark" class="form-control" required>
+                <div class="error"></div>
+              </div>
+               <!-- district -->
+               <div class="form-group input-control input-box pt-2 ">
+                <label for="district">District : </label>
+                <input type="text" id="district" name="district" class="form-control" required>
+                <div class="error"></div>
+              </div>
+               <!-- State -->
+               <div class="form-group input-control input-box py-2 ">
+                <label for="State">State : </label>
+                <input type="text" id="State" name="State" class="form-control" required>
+                <div class="error"></div>
+              </div>
+              <div class="form-group input-control input-box py-3 ">
+                <button class="btn1 shadow text-white" type="submit" value="Sign In">Save Address</button>
+              </div>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+    <script src="/static/js/admin/product.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </body>

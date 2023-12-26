@@ -1,0 +1,115 @@
+<%-include('../partials/profileheader') %>
+<style>
+   
+    input.form-control, textarea {
+        background-color: #fff;
+    }
+    input:disabled{
+        border: none;
+        background-color: #fff;
+        font-weight: bold;
+    }
+    .fs--1 a{
+        color: #7a7a7a;
+        padding: 10px;
+        text-decoration: none;
+        
+    }
+
+    .fs--1 a.active{
+        background-color: #7a7a7a;
+        color: #fff;
+    }
+    
+    .fs--1 a:hover {
+        background: #AB79D3;
+        color: white;
+    }
+    
+</style>
+<body>
+    <div class="container  p-0 d-flex">
+        <div class="col-lg-3">
+            
+                <div class="d-flex ">
+                    <img src="/static/images/profile-pic.png" alt="" style="height: 200px;" class=" mt-2">
+                </div>
+                <h6 class="pt-2"><%= user.email %></h6>
+                <div class="w-75">
+                    <hr>
+                </div>
+          
+                <div class="fs--1 fw-600">
+                    <a class=" d-block mb-2" href="#">PROFILE</a>
+                    <!-- <a id="bio-link" class=" d-block mb-2" onclick="editButton()">EDIT BIO</a> -->
+                    <a id="orders-link" class=" d-block mb-2" href="/profile/profile-orders">ORDERS</a>
+                    <!-- <a id="addresses-link" class=" d-block mb-2" href="/user/address">MANAGE ADDRESS</a> -->
+                   
+                </div>  
+        </div>
+        <div class="col-lg-9 m-auto mx-5 mt-2 ">
+           
+            <div class="col-12">
+                <label for="firstName"><b>Full Name</b></label>
+                <input class="form-control mb-3" id="firstName" type="text" name="firstName" value="<%= user.userName %>" disabled placeholder="First Name">
+                <span id="firstNameError" class="error"></span>
+            </div>
+            <div class="col-12">
+                <label for="email"><b>Email</b></label>
+                <input class="form-control mb-3" id="email" type="email" name="email" value="<%= user.email %>" disabled placeholder="Email">
+                <span id="emailError" class="error"></span>
+            </div>
+            <div class="col-12">
+                <label for="mobile"><b>Mobile</b></label>
+                <input class="form-control mb-3" id="mobile" type="number" name="mobile" value="<%= user.phone_number %>" disabled placeholder="Mobile">
+                <span id="mobileError" class="error"></span>
+            </div>
+
+           <div class="col-12">
+                <% if( Address && Address.length > 0) { %>
+                    <% for ( let items of Address ){ %>
+                        <div id="addressdiv-<%= items._id %>" class="row pl-lg-5 address mb-4 shadow ">
+                            <p class="pt-2"><%= `${items.fullName}` %></p> <p>Mobile : <%=` ${items.mobile}` %></p> <p><%= `${items.street}, ${items.village}, ${items.city}, Near ${items.landmark},
+                                PIN Code :  ${items.pincode}, ${items.state}` %> </p>
+                                
+                            <div class="row buttons">
+                                <div class="col">
+                                    <hr style="color: #86868662;">
+                                    <a class="edit btn text-secondary fw-bold" href="/profile-editAddress/<%= items._id %>">Edit Address</a>
+                                </div>
+                                <div class="col">
+                                    <hr style="color: #86868662;">    
+                                    <a href="/delete-address/<%= items._id %>"  class="remove btn text-danger fw-bold">Remove Address</a>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+                <div class="row mt-3 pl-lg-5 address p-2">
+                    <a class="btn text-primary fw-bold " href="/profile-addAddress">Add Address</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!-- <script>
+    function removeAddress() {
+    
+        swal({
+  title: "Are you sure?",
+  text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Poof! Your imaginary file has been deleted!", {
+      icon: "success",
+    });
+  } 
+});
+    }
+
+</script> -->

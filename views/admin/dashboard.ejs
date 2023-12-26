@@ -1,0 +1,462 @@
+<%-include('../partials/adminheader') %>
+
+
+  <div class="row px-0 m-0">
+
+    <!-- sidebar -->
+    <div class="col-md-2 sidebar " id="sidenav">
+      <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+        <ul class="list-unstyled ">
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/category" >Categories</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/products" >products</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/customers" >customers</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders" >orders</a>
+          </li>
+          <hr>
+        </ul>
+      </div>
+    </div>
+
+    <!-- main content  -->
+    <div class="col bg-primary-subtle" >
+      <div class="row pt-5 d-flex justify-content-center">
+        <div class="col-sm-3 card text-bg-info ms-2" style="max-width: 18rem;">
+          <div class="card-header">
+            <i class="fa-solid fa-box fa-xl"></i>
+            Products
+          </div>
+
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= productCount %>
+            </h5>
+
+          </div>
+        </div>
+        <div class="col-sm-3 card text-bg-info ms-2" style="max-width: 18rem;">
+          <div class="card-header">
+            <i class="fa-solid fa-user fa-xl"></i>
+            customers
+          </div>
+
+          <div class=" card-body">
+            <h5 class="card-title">
+              <%= customerCount %>
+            </h5>
+
+          </div>
+        </div>
+        <div class="col-sm-3 card text-bg-info ms-2" style="max-width: 18rem;">
+
+          <div class="card-header">
+            <i class="fa-solid fa-cart-shopping fa-xl"></i>
+            orders placed
+          </div>
+
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= ordersPlaced %>
+            </h5>
+
+          </div>
+        </div>
+        <!-- <div class="col-sm-3 card text-bg-info ms-2" style="max-width: 18rem;">
+                    <div class="card-header">
+                        <i class="fa-solid fa-check fa-xl"></i>
+                        completed orders</div>
+  
+                    <div class="card-body">
+                      <h5 class="card-title"><%= totalRevenue %></h5>
+                      
+                    </div>
+                  </div> -->
+      </div>
+
+<!-- product and sales graph -->
+
+      <div class="row pt-5 mx-4 ">
+        <!-- product graph -->
+        <div class="col-md-6 charts ">
+          <div class="charts-card rounded py-3">
+            <h4 class="charts-title fw-bold">Rescent sold products</h4>
+            <div id="product_chart"></div>
+          </div>
+        </div>
+        <!-- sales graph -->
+        <div class="col-md-6 charts ">
+          <div class="charts-card rounded py-2">
+           <div class="d-flex justify-content-between">
+            <h4 class="charts-title fw-bold">sales</h4>
+            <div class="dropdown d-flex justify-content-end">
+                <select class="form-select" id="timeIntervalSelect">
+                    <option value="day" selected>By Day</option>
+                    <option value="month">By Month</option>
+                    <option value="year">By Year</option>
+                </select>
+            </div>
+           </div>
+            <div id="sales_chart"></div>
+          </div>
+        </div>
+      </div>
+
+
+
+     
+      <!-- sales report -->
+
+      <div class="container bg-light p-4 rounded my-5" >
+    <!-- Modal
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    
+      </div>
+    </div>
+  </div> -->
+
+  
+  <!-- <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="staticBackdropLabel">Select Date Range</h5>
+      
+    </div>
+    <div class="modal-body py-3">
+      <form id="salesReport" action="/admin/dashboard/download-sales-report" method="post">
+        <label for="startDate" class="fw-bold">Start Date:</label>
+        <input type="date" name="startDate" id="startDate" required>
+        <label for="endDate" class="fw-bold ">End Date:</label>
+        <input type="date" name="endDate" id="endDate" required>
+
+        <div class="modal-footer d-flex justify-content-start">
+          <button type="submit" class="btn btn-info px-4" onclick="printSalesReport('print')">Print</button>
+        </div>
+    </div>
+
+    </form> -->
+    
+    <div class="date-range">
+      <div class="header">
+          <h5 class="title">Select Date Range</h5>
+      </div>
+      <div class="body py-3">
+          <form id="salesReport" action="/admin/dashboard/download-sales-report" method="post">
+              <label for="startDate" class="fw-bold">Start Date:</label>
+              <input type="date" name="startDate" id="startDate" required>
+              <label for="endDate" class="fw-bold">End Date:</label>
+              <input type="date" name="endDate" id="endDate" required>
+          </form>
+      </div>
+      <div class="footer d-flex justify-content-start">
+          <!-- <button type="submit" form="salesReport" class="btn btn-info px-4">Generate Report</button> -->
+          <button type="submit"  form="salesReport" class="btn btn-info px-4" onclick="generateSalesReport()">Generate Report</button>
+          <button type="button" class="btn btn-info px-4" onclick="printSalesReport('print')">Print</button>
+      </div>
+  </div>
+  
+        <h2 class="py-2">Sales Report</h2>
+        <div class="table-responsive" id="print">
+        <table class="table" id="sales-table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Order ID</th>
+              <th scope="col">Payment</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Order Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% sales.forEach((data) => { %>
+              <tr>
+                <td><%= data.date.toLocaleDateString('en-GB') %></td>
+                <td><%= data._id.toString().slice(-6) %></td>
+                <td><%= data.paymentMethod %></td>
+                <td><%= data.totalPrice %></td>
+                <td><%= data.orderStatus %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+          <ul class="pagination">
+           <% if (page > 1) { %>
+    <li class="page-item">
+    <a class="page-link" href="?page=<%= page - 1 %>&limit=5" aria-label="Previous">
+    <span aria-hidden="true">&laquo;</span>
+    </a>
+    </li>
+    <% } else { %>
+    <li class="page-item disabled">
+    <span class="page-link" aria-label="Previous">
+    <span aria-hidden="true">&laquo;</span>
+    </span>
+    </li>
+    <% } %>   
+    <% for (let i = 1; i <= totalPages; i++) { %>
+    <li class="page-item <%= page === i ? 'active' : '' %>">
+    <a class="page-link" href="?page=<%= i %>&limit=5"><%= i %></a>
+    </li>
+    <% } %>
+    <% if (page < totalPages) { %>
+    <li class="page-item">
+    <a class="page-link" href="?page=<%= page + 1 %>&limit=5" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+    </li>
+    <% } else { %>
+    <li class="page-item disabled">
+    <span class="page-link" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </span>
+    </li>
+    <% } %>
+    
+    </ul>
+    </nav>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- <script>
+    // nav open and close
+    function Nav() {
+        
+        if (document.getElementById("sidenav").style.width == '0px') {
+        document.getElementById("sidenav").style.width = "250px";
+    } else {
+       document.getElementById("sidenav").style.width = '0px'
+    }
+  }
+  </script> -->
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.2/apexcharts.min.js"></script>
+
+  <script>
+
+  // download sales report
+
+function printSalesReport( divName ) {
+        const printContents = document.getElementById( divName ).innerHTML
+        const originalContents = document.body.innerHTML
+        document.body.innerHTML = printContents;
+        window.print()
+        document.body.innerHTML = originalContents
+        return
+    }
+  
+
+    // ===================================================================================
+   
+    var mostSoldProductNames = <%- JSON.stringify(mostSoldProduct.map(item => ({
+    totalQuantity: item.qty,
+    productName: item._id
+}))) %>;
+
+
+
+// daily sales chart
+var dailychart = <%- JSON.stringify(dailyChart.map(item => ({
+    days: item._id,
+    revenue: item.dailyrevenue
+}))) %>;
+console.log('dailychart',dailychart);
+// // monthly sales chart
+
+var monthlychart = <%- JSON.stringify(monthlyChart.map(item => ({ days: item._id, revenue: item.dailyrevenue }))) %>;
+console.log('monthlyChart', monthlychart);
+
+var yearlychart =<%- JSON.stringify(yearlyChart.map(item => ({ days: item._id, revenue: item.dailyrevenue }))) %>
+console.log('yearlychart', yearlychart);
+
+var AreaChartoptions = {
+    series: [{
+        name: "sales",
+        data: dailychart.map(item => item.revenue)
+    }],
+    chart: {
+        type: 'area',
+        height: 350,
+        zoom: {
+            enabled: false
+        }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        curve: 'smooth'
+    },
+    title: {
+        text: 'Sales overview',
+        align: 'left'
+    },
+    subtitle: {
+        text: 'sales Movements',
+        align: 'left'
+    },
+    labels:  dailychart.map(item => item.days),
+    xaxis: {
+      type: 'category',
+    },
+    yaxis: {
+      opposite: false,
+    },
+    legend: {
+        horizontalAlign: 'left'
+    }
+};
+
+var saleschart = new ApexCharts(document.querySelector("#sales_chart"), AreaChartoptions);
+saleschart.render();
+
+
+
+document.getElementById('timeIntervalSelect').addEventListener('change', function () {
+    var selectedInterval = this.value; 
+    updateChart(selectedInterval); 
+});
+
+// Function to update chart based on the selected interval
+function updateChart(interval) {
+  let chartData = [];
+    switch (interval) {
+        case 'day':
+            chartData = dailychart;
+            break;
+        case 'month':
+            chartData = monthlychart;
+            break;
+        case 'year':
+            chartData = yearlychart;
+            break;
+        default:
+            break;
+    }
+
+    // Update the chart series and labels
+    saleschart.updateSeries([{
+      data: chartData.map(item => item.revenue)
+       
+    }]);
+
+    saleschart.updateOptions({
+      labels: chartData.map(item => item.days)
+
+    });
+}
+
+
+
+
+
+
+
+// // Event listener for the dropdown items
+// document.getElementById('byDayOption').addEventListener('click', function () {
+//     updateChartData('day');
+// });
+
+// document.getElementById('byWeekOption').addEventListener('click', function () {
+//     updateChartData('week');
+// });
+
+// document.getElementById('byYearOption').addEventListener('click', function () {
+//     updateChartData('year');
+// });
+
+
+// function updateChartData(interval) {
+//     // Implement logic to fetch and set data based on the selected interval
+//     // Example: You might fetch new data from the server based on the interval
+//     // and update the series and labels in the chart options.
+
+//     // For demonstration purposes, let's assume the data is updated here.
+//     var newData = getUpdatedData(interval);
+
+//     // Update the chart data
+//     saleschart.updateSeries([{
+//         data: newData.revenue
+//     }]);
+
+//     // Update x-axis labels
+//     saleschart.updateOptions({
+//         labels: newData.dates
+//     });
+// }
+
+
+
+
+
+//     var series = {
+//     monthDataSeries1: {
+//         revenue: dailychart.map(item => item.revenue),
+//         dates: dailychart.map(item => item.days)
+//     }
+// };
+
+
+
+
+// product graph
+var colors = ['#1b5a90', '#4caf50', '#ff9800', '#e91e63', '#9c27b0'];
+
+var barChartOptions = {
+  series: [{
+    data: mostSoldProductNames.map(item => item.totalQuantity),
+  }],
+  chart: {
+    height: 350,
+    type: 'bar',
+    events: {
+      click: function (chart, w, e) {
+
+      }
+    }
+  },
+  colors: colors,
+  plotOptions: {
+    bar: {
+      columnWidth: '45%',
+      distributed: true,
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  legend: {
+    show: false
+  },
+  xaxis: {
+    categories: mostSoldProductNames.map(item => item.productName),
+    labels: {
+      style: {
+        colors: colors,
+        fontSize: '12px'
+      }
+    }
+  }
+};
+
+var chart = new ApexCharts(document.querySelector("#product_chart"), barChartOptions);
+chart.render();
+
+
+
+
+
+  </script>
+

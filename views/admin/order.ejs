@@ -1,0 +1,113 @@
+<%-include('../partials/adminheader') %>
+<section>
+    <div class="row px-0 m-0">
+        <div class="col-md-2 sidebar " id="sidenav"  style="height: 100vh;">
+            <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+                <ul class="list-unstyled ">
+                  <li class="">
+                    <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/category">Categories</a>
+                  </li>
+                  <hr>
+                  <li class="">
+                    <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/products">products</a>
+                  </li>
+                  <hr>
+                  <li class="">
+                    <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/customers">customers</a>
+                  </li>
+                  <hr>
+                  <li class="">
+                    <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
+                  </li>
+                  <hr>
+                </ul>
+              </div>
+        </div>
+        <div class="col bg-primary-subtle" style="height: 100vh;">
+            <div class="container d-flex ">
+                <div class="d-flex mt-3"><h2>Order Manegement</h2></div>
+            </div>
+              <div class="container-fluid py-2">
+                  <table class="table">
+                    <thead class="table-light">
+                      <tr>
+                          <th> Date </th>
+                          <th> OrderId </th>
+                          <th> Payment </th>
+                          <th> Amount </th>
+                          <th> Order Status </th>
+                          <th></th>
+                        </tr>
+                    </thead>
+              
+                    <tbody>
+                      <% orders.forEach((data) => { %>
+                          <tr>
+                              <td><%= data.date.toLocaleDateString('en-GB') %></td>
+                              <td><%= data._id.toString().slice(-6) %></td>
+                              <td><%= data.paymentMethod  %></td>
+                              <td><%= data.totalPrice  %></td>
+                              <td>
+                                <form action="/admin/update-order-status/<%= data._id %>" method="post">
+                                    <select name="status" class="py-1">
+                                        <option value="disabled" class="text-secondary"><%= data.orderStatus %></option>
+                                        <% if (data.orderStatus === 'Cancelled') { %>
+                                            <option value="disabled" class="text-secondary" selected>Cancelled</option>
+                                        <% } %>
+                                        <option value="pending" <%= data.orderStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                        <option value="shipping" <%= data.orderStatus === 'Shipping' ? 'selected' : '' %>>Shipping</option>
+                                        <option value="delivered" <%= data.orderStatus === 'Confirmed' ? 'selected' : '' %>>delivered</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-success" style="<%= data.orderStatus === 'Cancelled' ? 'display: none;' : '' %>">Update Status</button>
+                                </form>
+                            </td>
+                            
+                              <td><a href="/admin/order-details/<%= data._id %>"class="btn btn-info">Order details</a></td>
+                          </tr>
+                      <% }); %>
+                  </tbody>
+              
+                  </table>
+          
+          
+                  <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+                    <ul class="pagination">
+                     <% if (page > 1) { %>
+          <li class="page-item">
+            <a class="page-link" href="?page=<%= page - 1 %>&limit=8" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        <% } else { %>
+          <li class="page-item disabled">
+            <span class="page-link" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </span>
+          </li>
+        <% } %>   
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= page === i ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>&limit=8"><%= i %></a>
+            </li>
+          <% } %>
+          <% if (page < totalPages) { %>
+            <li class="page-item">
+              <a class="page-link" href="?page=<%= page + 1 %>&limit=8" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          <% } else { %>
+            <li class="page-item disabled">
+              <span class="page-link" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </span>
+            </li>
+          <% } %>
+          
+        </ul>
+      </nav> 
+              </div>
+        </div>
+    </div>
+    <!--  -->
+  </section>
