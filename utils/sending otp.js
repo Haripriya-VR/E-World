@@ -18,20 +18,16 @@ const mailTransporter = nodemailer.createTransport({
 
 mailTransporter.verify((error, success) => {
     if (error) {
-        console.log('Error: is this', error);
-    } else {
-        console.log('Email ready');
-        console.log(success);
-    }
+        res.render('./error/500')
+    } 
 });
 
 const sendEmail = async (mailOptions) => {
     try {
         await mailTransporter.sendMail(mailOptions);
-        console.log('Email sent');
         return;
     } catch (err) {
-        console.log('Error in sending email:', err);
+        res.render('./error/500')
     }
 };
 

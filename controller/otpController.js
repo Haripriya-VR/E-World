@@ -8,16 +8,15 @@ const { sendEmail } = require('../utils/sending otp')
 
 const { AUTH_EMAIL } = process.env;
 
-
 // senting the otp  to email
 const sent_otp = async (email) => {
-    try {
-        console.log('mail', email);
+    try { 
         if (!(email)) {
             throw Error("provide values for email,subject,message")
         }
         //generate new otp
         const generatedOTP = otp();
+
         //sending email to the user
         const mailOptions = {
             from: AUTH_EMAIL,
@@ -34,7 +33,6 @@ const sent_otp = async (email) => {
         const currentDate = new Date();
 
         const newDate = new Date(currentDate.getTime() + 2 * 60 * 1000);
-        console.log('newdate', newDate);
 
         const newOTP = await new OTPverification({
             email,
@@ -47,26 +45,30 @@ const sent_otp = async (email) => {
 
 
     } catch (error) {
-        console.log('error in sending otp mail', error);
+        res.render('./error/500')
     }
 }
 
 // get otp verificaton page
 
 const otp_get = async (req, res) => {
-
-    res.render('./users/otpverify')
+try {
+    if(req.session.email){
+        res.redirect('/users/userhome')
+    }else{
+        res.render('./users/otpverify')
+    }
+} catch (error) {
+    res.render('./error/500')
+}
 }
 
-// verfiying the otp received
+// verfiying the otp received post
 
 const otp_verify = async (req, res) => {
     if (req.session.signotp) {
-
-        console.log(req.body)
         try {
             const data = req.session.data;
-            console.log("data here", req.session.data);
             const dataplus = {
                 userName: data.userName,
                 phone_number: data.phone_number,
@@ -75,23 +77,19 @@ const otp_verify = async (req, res) => {
                 ISactive: true,
                 timeStamp: Date.now()
             }
-            console.log('email', data.email);
+
             const Otp = await OTPverification.findOne({ email: data.email })
 
-            const hashed = Otp.otp;
-            console.log('hashed', hashed);
+            const hashed = Otp.otp; 
 
             // Use the plain text user OTP
             const otp_fromuser = req.body.code;
-            console.log('user otp', otp_fromuser);
 
             const match = await bcrypt.compare(otp_fromuser, hashed);
-
-            console.log('otp matched', match);
             if (!match || '') {
                 // If OTP does not match, set an error message
                 const errorMessage = 'Invalid OTP. Please try again.';
-                res.redirect('/users/otpverify', { errorMessage });
+                res.json({errorMessage})
             }
 
             if (match) {
@@ -99,18 +97,18 @@ const otp_verify = async (req, res) => {
                 req.session.signotp = false
 
                 req.session.logged = true
-
-                res.redirect("/login")
+                res.json({success:true})
+               
 
             }
             else {
-
-                res.redirect("/users/otpverify")
+                const errorMessage = 'otp doesnot match try again'
+                res.json({errorMessage})
             }
 
         } catch (err) {
-            console.log(err);
-            res.redirect("/users/otpverify")
+            res.render('./error/500')
+           
         }
     }
 
@@ -119,12 +117,10 @@ const otp_verify = async (req, res) => {
 
 const otpSender = async (req, res) => {
     try {
-        const email = req.session.email;
-        console.log('mail here', email);
+        const email = req.session.data.email;
         const createdOTP = await sent_otp(email)
         res.status(200).redirect("/users/otpverify")
     } catch (error) {
-        console.log('error in otpSender ', error);
         res.redirect('/users/signup')
     }
 }

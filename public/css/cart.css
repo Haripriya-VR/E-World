@@ -5,7 +5,6 @@
 
 .cart-total{
     padding: 3em;
-    background-color: #d6d6d6;
     
 }
 .coupon-input{
@@ -17,9 +16,7 @@
 
 /* checkout styles */
 
-.order-container{
-    background-color: #d6d6d6;
-}
+
 .input-box{
     width: 40%;
     margin: auto;

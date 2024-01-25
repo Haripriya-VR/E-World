@@ -2,42 +2,58 @@
 
 
   <body>
-    <div class="container-fluid main-content ">
-      <div class="  product-content shadow  my-5  d-flex">
-        <div class="container signup-details">
-          <h2 class="fw-bold text-dark text-center py-4">Edit Category</h2>
-          <form action="/admin/edit-category/<%= categoryToEdit._id %>" method="post" id="form">
-            <div class="form-group input-control input-box py-2 ">
-              <label for="categoryname">Category Name:</label>
-              <input type="text" id="categoryname" name="categoryname" class="form-control" value="<%= categoryToEdit.category %>">
-              <div class="error"></div>
+    <div class="row px-0 m-0">
+      <div class="col-md-2 sidebar " id="sidenav"  style="height: 100vh;">
+          <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+            <ul class="list-unstyled ">
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/category">Categories</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/products">products</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/customers">customers</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/coupon">coupon</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/salesReport">sales Report</a>
+              </li>
+              <hr>
+            </ul>
+          </div>
+      </div>
+      <div class="col ">
+        <div class="container-fluid  ">
+          <div class="  product-content shadow  my-5  d-flex">
+            <div class="container signup-details">
+              <h2 class="fw-bold text-dark text-center py-4">Edit Category</h2>
+              <form action="/admin/edit-category/<%= categoryToEdit._id %>" method="post" id="form">
+                <div class="form-group input-control input-box py-2 ">
+                  <label for="categoryname">Category Name:</label>
+                  <input type="text" onchange="checkCategory()"  id="categoryname" name="categoryname" class="form-control" required>
+                  <div id="error" class="error"></div>
+                </div>
 
+                <div class="form-group input-control input-box pt-3 ">
+                  <button class="btn1 shadow text-white mb-5" id="addcatBtn" type="submit" value="Sign In">Edit category</button>
+                </div>
+              </form>
             </div>
-
-            <!-- status -->
-            
-            <div class="form-group input-control input-box py-2">
-                <label for="status">Status:</label><br>
-                <input type="radio" name="status" id="active" value="active" <%= categoryToEdit.status === 'active' ? 'checked' : '' %> >
-                <label for="active" class="pe-4">Active</label>
-                <input type="radio" name="status" id="Inactive" value="Inactive" <%= categoryToEdit.status === 'Inactive' ? 'checked' : '' %> >
-                <label for="Inactive">Inactive</label>
-                <div class="error"></div>
-              </div>
-            
-        
-            <div class="form-group input-control input-box pt-3 ">
-              <button class="btn1 shadow text-white" type="submit" value="Sign In">Edit category</button>
-            </div>
-
-
-
-          </form>
+          </div>
         </div>
       </div>
-    </div>
-
-
+  </div>
 
     <script src="/static/js/admin/product.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -48,3 +64,33 @@
       crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </body>
+  <script>
+    function checkCategory() {
+      document.getElementById('error').style.display = 'none'
+      document.getElementById('addcatBtn').disabled = false;
+      const categoryname = document.getElementById('categoryname').value
+      const categoryRegex = /^[a-zA-Z0-9]+(?:[_-][a-zA-Z0-9]+)*$/;
+
+      if (!categoryRegex.test(categoryname)) {
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('error').innerHTML = "Enter a valid category name";
+        document.getElementById('addcatBtn').disabled = true;
+      }
+
+      $.ajax({
+        url: '/admin/categorycheck',
+        method: 'POST',
+        data: {
+          categoryname
+        },
+        success: function (response) {
+          if (response.message) {
+
+            document.getElementById('error').style.display = 'block'
+            document.getElementById('error').innerHTML = response.message
+            document.getElementById('addcatBtn').disabled = true;
+          }
+        },
+      });
+    }
+  </script>

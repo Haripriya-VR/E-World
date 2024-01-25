@@ -1,0 +1,130 @@
+<%-include('../partials/adminheader') %>
+
+<div class="row px-0 m-0">
+    <div class="col-md-2 sidebar " id="sidenav"  style="height: 100vh;">
+      <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+        <ul class="list-unstyled ">
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/category">Categories</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/products">products</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/customers">customers</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/coupon">coupon</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/salesReport">sales Report</a>
+          </li>
+          <hr>
+        </ul>
+      </div>
+    </div>
+    <div class="col " style="height: 100vh;">
+        <div class="container d-flex ">
+          <div class="d-flex mt-3"><h2>Coupon Manegement</h2></div>
+          <div class="search-content-admin d-flex m-auto   border">
+            <form action="/admin/coupon/search" method="post">
+                <input type="text" class="search px-5 " placeholder="Search coupons" name="search">
+                <button type="submit" class="search-btn"><i class="fa fa-search fa-xl"></i></button>
+            </form>
+        </div>
+          <div class="d-flex justify-content-end my-3">
+              <button class="Add-button "><a href="/admin/addCoupons" class="text-decoration-none text-white">Add coupons</a></button>
+          </div>
+      </div>
+        <div class="container-fluid py-2">
+          <form action="/upload" method="post" enctype="multipart/form-data" >
+            <table class="table">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Coupon Name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Starting Date</th>
+                  <th scope="col">Expiring Date</th>
+                  <th scope="col">Minimum Amount</th>
+                  <th scope="col">Discount-type</th>
+                  <th scope="col">Discount</th>
+                  <th scope="col">edit</th>
+                  <th scope="col">status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if(Coupon.length > 0) { %>
+                  <% Coupon.forEach((data) => { %>
+                    <tr>
+                      <td scope="col"><%= data.name %></td>
+                      <td scope="col"><%= data.description %></td>
+                      <td scope="col"><%= data.startingDate.toLocaleDateString('en-GB') %></td>
+                      <td scope="col"><%= data.expiryDate.toLocaleDateString('en-GB') %></td>
+                      <td scope="col"><%= data.minimumAmount %></td>
+                      <td scope="col"><%= data.discountType %></td>
+                      <td scope="col"><%= data.discount %></td>
+                      <td scope="col">
+                        <a href="/admin/editCoupon/<%= data._id %>"><i class="fa-solid fa-pen-to-square"></i></a>
+                      </td>
+                      <td scope="col"><%= data.status %></td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="9">No coupons available</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+
+    </form>
+    
+<div class="mt-5 pt-5">
+  <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+    <ul class="pagination">
+     <% if (page > 1) { %>
+<li class="page-item">
+<a class="page-link" href="?page=<%= page - 1 %>&limit=8" aria-label="Previous">
+<span aria-hidden="true">&laquo;</span>
+</a>
+</li>
+<% } else { %>
+<li class="page-item disabled">
+<span class="page-link" aria-label="Previous">
+<span aria-hidden="true">&laquo;</span>
+</span>
+</li>
+<% } %>
+<% for (let i = 1; i <= totalPages; i++) { %>
+<li class="page-item <%= page === i ? 'active' : '' %>">
+  <a class="page-link" href="?page=<%= i %>&limit=8"><%= i %></a>
+</li>
+<% } %>
+<% if (page < totalPages) { %>
+<li class="page-item">
+  <a class="page-link" href="?page=<%= page + 1 %>&limit=8" aria-label="Next">
+    <span aria-hidden="true">&raquo;</span>
+  </a>
+</li>
+<% } else { %>
+<li class="page-item disabled">
+  <span class="page-link" aria-label="Next">
+    <span aria-hidden="true">&raquo;</span>
+  </span>
+</li>
+<% } %>
+
+</ul>
+</nav>
+</div>
+        </div>
+    </div>
+</div>

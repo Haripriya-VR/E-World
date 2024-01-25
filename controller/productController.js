@@ -19,7 +19,7 @@ const products_page = async (req, res) => {
     res.render('admin/products',{product,page,totalPages,totalProducts});
 
   } catch (error) {
-    console.log('error in admin-product',error);
+    res.render('./error/500')
   }
 };
 
@@ -36,7 +36,6 @@ const products_post = async (req, res) => {
   try {
     const images = req.files.map(file => file.path);
 
-    console.log('products', req.body);
     const categoryObject = await Category.findOne({ category: req.body.Category });
     const data = {
       name: req.body.productname,
@@ -51,7 +50,7 @@ const products_post = async (req, res) => {
 
     res.redirect("/admin/products");
   } catch (error) {
-    console.log('product post', error);
+    res.render('./error/500')
   }
 
 
@@ -63,9 +62,10 @@ const editproduct = async (req, res) => {
     const id = req.params.id;
     const categories = await Category.find();
     const product = await products.findOne({ _id: id });
-    res.render('admin/edit-products', { product, categories })
+    const description = product.description
+    res.render('admin/edit-products', { product, categories ,description})
   } catch (error) {
-    console.log('error in getting edit page', error);
+    res.render('./error/500')
   }
 }
 
@@ -73,25 +73,35 @@ const editproduct = async (req, res) => {
 const editproduct_post = async (req, res) => {
   try {
     const categoryObject = await Category.findOne({ category: req.body.Category });
-    const data = {
-      name: req.body.productname,
-      category: categoryObject._id,
-      quantity: req.body.quantity,
-      price: req.body.price,
-      description: req.body.description
-    }
-    if (req.file) {
-      data.images = req.file.path
-    }
+    const images = req.files.map(file => file.path);
+   
+    if (images.length > 0) {
+      const data = {
+        name: req.body.productname,
+        category: categoryObject._id,
+        quantity: req.body.quantity,
+        price: req.body.price,
+        description: req.body.description,
+        images: images
+      }
+      const id = req.params.id;
+      await products.updateOne({ _id: id }, { $set: data })
+    } else {
+      const data = {
+        name: req.body.productname,
+        category: categoryObject._id,
+        quantity: req.body.quantity,
+        price: req.body.price,
+        description: req.body.description
 
-    const id = req.params.id;
-
-    const updatedata = await products.updateOne({ _id: id }, { $set: data });
+      }
+      const id = req.params.id;
+      await products.updateOne({ _id: id }, { $set: data })
+    }
 
     res.redirect("/admin/products");
   } catch (error) {
-    console.log('error in edit products', error);
-    res.status(500).send('Internal Server Error');
+    res.render('./error/500')
   }
 }
 
@@ -99,10 +109,16 @@ const editproduct_post = async (req, res) => {
 
 const search_products = async (req, res) => {
   try {
+    const limit = parseInt(req.query.limit) || 8;
+    const page = parseInt(req.query.page) || 1;
+
+    const totalProducts = await products.countDocuments();
+    const totalPages = Math.ceil(totalProducts / limit);
+
     const search_product = req.body.search
     const product = await products.find({ name: search_product })
     if (product) {
-      res.render('admin/products', { product })
+      res.render('admin/products', { product ,page,totalPages,totalProducts})
     }
 
   } catch (error) {
@@ -118,8 +134,7 @@ const activateProduct = async (req, res) => {
     await activateOrDeactivateProduct(id, true); // Set the second parameter to true for activation
     res.redirect('/admin/products');
   } catch (error) {
-    console.log('Error activating product:', error);
-    res.status(500).send('Internal Server Error');
+    res.render('./error/500')
   }
 };
 
@@ -130,8 +145,7 @@ const deactivateProduct = async (req, res) => {
     await activateOrDeactivateProduct(id, false); // Set the second parameter to false for deactivation
     res.redirect('/admin/products');
   } catch (error) {
-    console.log('Error deactivating product:', error);
-    res.status(500).send('Internal Server Error');
+    res.render('./error/500')
   }
 };
 
@@ -150,7 +164,7 @@ const activateOrDeactivateProduct = async (productId, activate) => {
       throw new Error('Product not found');
     }
   } catch (error) {
-    throw error;
+    res.render('./error/500')
   }
 };
 

@@ -1,8 +1,17 @@
 <%-include('../partials/userheader') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+<body>
 
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div id="invoiceContent" class="col">
             <h3 class="text-center text-success">Order Confirmed</h3>
             <% if (orders?.length > 0) { %>
                 <% orders.forEach(item => { %>
@@ -14,16 +23,19 @@
                     <li>Payment Method: <%= item.paymentMethod %> </li>
                   </ul>
                   <hr>
-                  <ul class="list-unstyled">
-                    <h5>Address</h5>
-                    <li> <%= item.address.fullName %></li>
-                    <li> <%= item.address.mobile %> </li>
-                    <li> <%= item.address.street %>,<%= item.address.city %></li>
-                    <li>Pincode: <%= item.address.pinCode %> </li>
-                    <li>District: <%= item.address.district %></li>
-                  </ul>
                 <% }); %>
               <% } %>
+
+              <ul class="list-unstyled">
+                <% address.forEach(item => { %>
+                <h5>Address</h5>
+                <li> <%= item.fullName %></li>
+                <li> <%= item.mobile %> </li>
+                <li> <%= item.street %>,<%= item.city %></li>
+                <li>Pincode: <%= item.pinCode %> </li>
+                <li>District: <%= item.district %></li>
+                <% }); %>
+              </ul>
               <hr>
         <div class="col pt-3">
             <h5>Products</h5>
@@ -53,31 +65,27 @@
                            </div>
                           </td>
                           <td>
-                           
                             <span id="quantity_<%= item.productId._id %>" class="text-dark"><%= item.quantity %></span>
-                            
-                            
                           </td>
-                        
-                          <td id="totalPrice"><%= item.quantity * item.productId.price %></td>
-                         
-                          
+                          <td id="totalPrice" ><%= totalPrice %></td>
                       </tr>
               <%
-                      });
-                  } else {
-              %>
-                      <tr>
-                          <td colspan="4">No item found in cart</td>
-                      </tr>
-              <%
+                      }); 
                   }
               %>
-             
-
-
+            
+                      
                 </tbody>
               </table>
         </div>
     </div>
+   
 </div>
+
+
+
+
+
+
+</body>
+</html>

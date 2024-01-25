@@ -1,18 +1,6 @@
 const mongoose = require('mongoose');
 
 require("../config/dbconnect");
-
-// Define the schema for the "users" collection
-
-// const addressSchema = mongoose.Schema({
-//     addressLane: { type: String },
-//     country: { type: String },
-//     pincode: { type: Number },
-//     state: { type: String },
-//   });
-
-
-
   
   const userSchema =  mongoose.Schema({
     userName: {
@@ -47,7 +35,24 @@ require("../config/dbconnect");
     ISbanned: { 
       type: Boolean,
        default: false
-    }
+    },
+    wallet : {
+        type : Number,
+        default : 0
+    },
+
+    walletHistory : [{
+        date : {
+            type : Date,
+        },
+        amount : {
+            type : Number
+        },
+        message : {
+            type : String
+        }
+
+    }]
   });
   
   // Create a Mongoose model for the "users" collection

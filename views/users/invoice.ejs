@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+        <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+    <style>
+      body{
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: 600;
+      }
+
+        .invoice-container {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details div {
+            flex: 1;
+        }
+
+        .invoice-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .invoice-items th, .invoice-items td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .total {
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="invoice-container " id="invoiceContent">
+        <div class="header " style="background-color: #4B1C70;">
+            <h2 class="text-white fw-bold">E-World</h2>
+        </div>
+
+        <div class="invoice-details">
+
+            <div>
+                <h3 class="fw-bold">From:</h3>
+                <p>E-World</p>
+                <p>Main-street,Mini-by-pass Rd</p>
+                <p>9876543210</p>
+            </div>
+            
+            <div>
+                <h3 class="fw-bold">To:</h3>
+                <ul class="list-unstyled">
+                    <% Address.forEach(item => { %>
+                    <h5>Address</h5>
+                    <li> <%= item.fullName %></li>
+                    <li> <%= item.mobile %> </li>
+                    <li> <%= item.street %>,<%= item.city %></li>
+                    <li>Pincode: <%= item.pinCode %> </li>
+                    <li>District: <%= item.district %></li>
+                    <% }); %>
+                  </ul>
+            </div>
+            
+            <div>
+                   
+                    <ul class="list-unstyled">
+                        <h5 class="fw-bold">Order Details : </h5>
+                        <li>Order Date: <%= Details.date.toLocaleDateString('en-GB') %></li>
+                        <li>Order Id: <%= Details._id.toString().slice(-6) %> </li>
+                        <li>Amount: <%= Details.totalPrice %></li>
+                        <li>Payment Method: <%= Details.paymentMethod %> </li>
+                    </ul>
+                 
+            </div>
+           
+        </div>
+       
+        <div class="col pt-3">
+            <h5 class="fw-bold">PRODUCT DETAILS</h5>
+            <table class="table  table-hover">
+                <thead>
+                  <tr >
+                    <th scope="col">PRODUCT</th>
+                    <th scope="col">QUANTITY</th>
+                    <th scope="col">Total</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <%
+                  if (products?.length > 0) {
+                    products.forEach(item => {
+              %>
+                      <tr>
+                          <td>
+                           <div class="product-container d-flex">
+                           
+                              <img src="\<%= item.productId.images[0] %>" class="card-img-top" alt="Product Image" style="width: 50px; height: 50px;" >
+                            
+                            <div>
+                              <%= item.productId.name %> <br> <%= item.productId.price %>
+                            </div>
+                           </div>
+                          </td>
+                          <td>
+                            <span id="quantity_<%= item.productId._id %>" class="text-dark"><%= item.quantity %></span>
+                          </td>
+                          <td id="totalPrice"><%= item.quantity * item.productId.price %></td>
+                      </tr>
+              <%
+                      }); 
+                  }
+              %>
+                </tbody>
+                </table>
+                <div class="total">
+                    <p>Total: <%= Details.totalPrice %></p>
+                </div>
+            
+                <div>
+                    <p class="text-center">Tank you For Your business.</p>
+                </div>
+      
+    </div>
+    </div>
+
+
+    <div class="py-4 text-center">
+        <button id="downloadInvoiceBtn" class="btn btn-primary" onclick="generatePDF()">Download Invoice</button>
+       </div>
+
+</body>
+<script>
+    function generatePDF() {
+      const element = document.getElementById('invoiceContent');
+        html2pdf(element, {
+          quality: 2,
+          scale: 3,
+        });
+     
+    }
+    </script>
+</html>

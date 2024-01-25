@@ -1,0 +1,257 @@
+<%-include('../partials/adminheader') %>
+
+    <body>
+
+        <div class="row px-0 m-0">
+            <div class="col-md-2 sidebar " id="sidenav">
+                <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+                    <ul class="list-unstyled ">
+                        <li class="">
+                            <a class="nav-link active fw-bold pt-3" aria-current="page"
+                                href="/admin/category">Categories</a>
+                        </li>
+                        <hr>
+                        <li class="">
+                            <a class="nav-link active fw-bold pt-3" aria-current="page"
+                                href="/admin/products">products</a>
+                        </li>
+                        <hr>
+                        <li class="">
+                            <a class="nav-link active fw-bold pt-3" aria-current="page"
+                                href="/admin/customers">customers</a>
+                        </li>
+                        <hr>
+                        <li class="">
+                            <a class="nav-link active fw-bold pt-3" aria-current="page"
+                             href="/admin/orders">orders</a>
+                        </li>
+                        <hr>
+                        <li class="">
+                            <a class="nav-link active fw-bold pt-3" aria-current="page" 
+                            href="/admin/coupon">coupon</a>
+                        </li>
+                        <hr>
+                        <li class="">
+                            <a class="nav-link active fw-bold pt-3" aria-current="page"
+                             href="/admin/salesReport">sales
+                                Report</a>
+                        </li>
+                        <hr>
+                    </ul>
+                </div>
+            </div>
+            <div class="col ">
+                <div class="container-fluid  ">
+                    <div class="  product-content shadow  my-5  d-flex">
+                        <div class="container signup-details">
+                            <h2 class="fw-bold text-dark text-center py-4">Edit Coupons</h2>
+                            <form action="/admin/editCoupons/<%= coupons._id %>" method="post" id="form">
+
+                                <!-- coupon name -->
+                                <div class="form-group input-control input-box py-2 ">
+                                    <label for="couponname">Coupon Name:</label>
+                                    <input type="text" onchange="checkCoupon()" id="couponname" name="couponname"
+                                        value="<%= coupons.name %>" class="form-control" required>
+                                    <div id="error" class="error"></div>
+                                </div>
+
+                                <!-- coupon description -->
+                                <% if (coupons.description) { %>
+                                    <div class="form-group input-control input-box py-2">
+                                        <label for="description">Description:</label>
+                                        <input type="text" id="description" value="<%= coupons.description %>"
+                                            name="description" class="form-control" required>
+                                        <div id="deserror" class="error"></div>
+                                    </div>
+                                    <% } else { %>
+                                        <div class="form-group input-control input-box py-2">
+                                            <label for="description">Description:</label>
+                                            <input type="text" id="description" name="description" class="form-control"
+                                                required>
+                                            <div id="deserror" class="error"></div>
+                                        </div>
+                                        <% } %>
+
+
+
+                                            <!-- Starting Date -->
+                                            <div class="form-group input-control input-box py-2">
+                                                <label for="StartingDate">Starting Date:</label>
+                                                <input type="date" id="StartingDate"
+                                                    value="<%= coupons.startingDate.toISOString().split('T')[0] %>"
+                                                    name="StartingDate" class="form-control" required>
+                                                <div id="startError" class="error"></div>
+                                            </div>
+
+                                            <!-- Expiring Date -->
+                                            <div class="form-group input-control input-box py-2">
+                                                <label for="expiringDate">Expiring Date:</label>
+                                                <input type="date" id="expiringDate"
+                                                    value="<%= coupons.expiryDate.toISOString().split('T')[0] %>"
+                                                    name="expiringDate" class="form-control" required>
+                                                <div id="endError" class="error"></div>
+                                            </div>
+
+                                            <!-- Minimum Amount -->
+                                            <div class="form-group input-control input-box py-2 ">
+                                                <label for="minimumAmount"> Minimum Amount :</label>
+                                                <input type="number" id="minimumAmount"
+                                                    value="<%= coupons.minimumAmount %>" name="minimumAmount"
+                                                    class="form-control" required>
+                                                <div id="minAmountError" class="error"></div>
+                                            </div>
+
+                                            <!-- Discount type -->
+                                            <div class="form-group input-control input-box py-2">
+                                                <label for="discountType"> Discount type:</label>
+                                                <select id="discountType" name="discountType" class="form-control"
+                                                    required>
+                                                    <option value="<%= coupons.discountType %>" disabled selected>
+                                                        <%= coupons.discountType %>
+                                                    </option>
+
+                                                    <option value="fixed">Fixed</option>
+                                                    <option value="percentage">Percentage</option>
+
+                                                </select>
+                                                <div id="discountTypeError" class="error"></div>
+                                            </div>
+
+
+                                            <!-- Discount -->
+                                            <div class="form-group input-control input-box py-2">
+                                                <label for="discount"> Discount:</label>
+                                                <input type="number" id="discount" value="<%= coupons.discount %>"
+                                                    name="discount" class="form-control" required>
+                                                <div id="discountError" class="error"></div>
+                                            </div>
+
+                                            
+                                           <!-- status -->
+                                           <div class="form-group input-control input-box py-2">
+                                           <div>
+                                            <p>Status</p>
+                                            <input type="radio" name="status" id="statusTrue" value="true" checked>
+                                            <label for="statusTrue">true</label>
+                                          </div>
+                                          <div>
+                                            <input type="radio" name="status" id="=statusFalse" value="false">
+                                            <label for="statusFalse">false</label>
+                    
+                                          </div>
+                                        </div>
+
+
+                                            <div class="form-group input-control input-box py-4 ">
+                                                <button type="submit" class="btn1 shadow text-white" id="addBtn"
+                                                    onclick=" validation()" value="Sign In">Edit Coupons</button>
+                                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="/static/js/admin/product.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </body>
+    <script>
+        // check  coupon already exist 
+        function checkCoupon() {
+
+            document.getElementById('error').style.display = 'none'
+            document.getElementById('addBtn').disabled = false;
+            const couponname = document.getElementById('couponname').value
+            $.ajax({
+                url: '/admin/couponcheck',
+                method: 'POST',
+                data: {
+                    couponname
+                },
+                success: function (response) {
+                    if (response.message) {
+
+                        document.getElementById('error').style.display = 'block'
+                        document.getElementById('error').innerHTML = response.message
+                        document.getElementById('addBtn').disabled = true;
+                    }
+                },
+            });
+        }
+
+
+        // add coupon validation
+
+        const form = document.getElementById('form');
+        form.addEventListener('submit', (e) => {
+          
+           
+            if (!validation()) {
+                e.preventDefault();
+            }
+        });
+
+        function validation() {
+
+            const startingDate = new Date(document.getElementById('StartingDate').value);
+
+            const description = document.getElementById('description').value
+
+            var expiringDate = new Date(document.getElementById('expiringDate').value);
+
+            var discountType = document.getElementById('discountType').value;
+            var discount = parseFloat(document.getElementById('discount').value);
+            var minimumAmount = parseFloat(document.getElementById('minimumAmount').value);
+
+
+
+            // Validate description
+            if (description == " " || description == "_" || description == "-") {
+                document.getElementById('deserror').style.display = 'block';
+                document.getElementById('deserror').innerHTML = "Enter a valid description";
+
+                return false;
+            } else {
+                document.getElementById('deserror').style.display = 'none';
+            }
+
+            // Validate Starting Date and Expiring Date
+            if (startingDate >= expiringDate) {
+
+                document.getElementById('startError').style.display = 'block';
+                document.getElementById('startError').innerHTML = 'Starting Date should be less than Expiring Date';
+                
+
+                return false;
+            } else {
+                document.getElementById('startError').style.display = 'none';
+            }
+            if (isNaN(minimumAmount) || minimumAmount < 0) {
+                document.getElementById('minAmountError').style.display = 'block';
+                document.getElementById('minAmountError').innerHTML = 'Enter a valid minimum amount';
+                return false;
+            } else {
+                document.getElementById('minAmountError').style.display = 'none';
+            }
+
+            // Validate Discount Type
+            if (discountType == 'percentage') {
+                if (discount < 0 || discount > 100) {
+                    document.getElementById('discountError').style.display = 'block'
+                    document.getElementById('discountError').innerHTML = "percentage should be between 1 and 100"
+                    return false;
+                } else {
+                    document.getElementById('discountError').style.display = 'none';
+                }
+            }
+            return true;
+        }
+    </script>

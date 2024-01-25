@@ -4,7 +4,14 @@
     background-color:#4B1C70;
     text-decoration-color: #ffffff;
 }
-
+.user-login {
+    width: 4.2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    border-radius: 6.25rem;
+    border: 3px solid #CE33BF;
+    background: #4B1C70;
+}
 /* dashboard */
 
 .main-content{
@@ -47,9 +54,7 @@
     background: #811dcd;
 }
 .search-content-admin form ,.search,button {
-    background-color:gainsboro;
     height: 50px;
-
     border: none;
     outline: none;
     
@@ -60,7 +65,13 @@
 
  /* admin add products */
 
-
+ .Add-button{
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #af30c5;
+    color: black;
+}
 
 .product-content{
     height: 100;

@@ -15,7 +15,6 @@ var instance = new Razorpay({
             currency: "INR",
             receipt: id
         })
-        console.log('order here',order);
           return order
     }
 }

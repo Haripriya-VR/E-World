@@ -41,10 +41,10 @@
           
                 <div class="fs--1 fw-600">
                     <a class=" d-block mb-2" href="#">PROFILE</a>
-                    <!-- <a id="bio-link" class=" d-block mb-2" onclick="editButton()">EDIT BIO</a> -->
+                    <a id="bio-link" class=" d-block mb-2" href="/edit-bio" >EDIT BIO</a>
                     <a id="orders-link" class=" d-block mb-2" href="/profile/profile-orders">ORDERS</a>
-                    <!-- <a id="addresses-link" class=" d-block mb-2" href="/user/address">MANAGE ADDRESS</a> -->
-                   
+                    <a id="wallet" class=" d-block mb-2" href="/wallet">WALLET</a>
+
                 </div>  
         </div>
         <div class="col-lg-9 m-auto mx-5 mt-2 ">
@@ -79,7 +79,8 @@
                                 </div>
                                 <div class="col">
                                     <hr style="color: #86868662;">    
-                                    <a href="/delete-address/<%= items._id %>"  class="remove btn text-danger fw-bold">Remove Address</a>
+
+                                    <button type="submit"  class="remove btn text-danger fw-bold" onclick="removeAddress('<%= items._id %>')">Remove Address </button>
                                 </div>
                             </div>
                         </div>
@@ -92,24 +93,37 @@
         </div>
     </div>
 </body>
+<%-include('../partials/userFooter') %>
 
-<!-- <script>
-    function removeAddress() {
-    
-        swal({
-  title: "Are you sure?",
-  text: "Once deleted, you will not be able to recover this imaginary file!",
-  icon: "warning",
-  buttons: true,
-  dangerMode: true,
-})
-.then((willDelete) => {
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+
+async function removeAddress(addressId) {
+  const willDelete = await swal({
+    title: "Are you sure?",
+    text: "Do you want to Remove Address?!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  });
+
   if (willDelete) {
-    swal("Poof! Your imaginary file has been deleted!", {
-      icon: "success",
+   
+      swal("Address has been removed!", {
+        icon: "success",
+      });
+      const deleteAddress = await axios.get(`/delete-address/${addressId}`);
+   
+  } else {
+   
+    swal("Address removal canceled!", {
+      icon: "info",
     });
-  } 
-});
-    }
+  }
+}
 
-</script> -->
+
+
+
+</script>

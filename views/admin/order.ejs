@@ -20,10 +20,18 @@
                     <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
                   </li>
                   <hr>
+                  <li class="">
+                    <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/coupon">coupon</a>
+                  </li>
+                  <hr>
+                  <li class="">
+                    <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/salesReport">sales Report</a>
+                  </li>
+                  <hr>
                 </ul>
               </div>
         </div>
-        <div class="col bg-primary-subtle" style="height: 100vh;">
+        <div class="col " style="height: 100vh;">
             <div class="container d-flex ">
                 <div class="d-flex mt-3"><h2>Order Manegement</h2></div>
             </div>
@@ -46,7 +54,7 @@
                               <td><%= data.date.toLocaleDateString('en-GB') %></td>
                               <td><%= data._id.toString().slice(-6) %></td>
                               <td><%= data.paymentMethod  %></td>
-                              <td><%= data.totalPrice  %></td>
+                              <td><span class="fw-bold">Rs : </span><%= data.totalPrice  %></td>
                               <td>
                                 <form action="/admin/update-order-status/<%= data._id %>" method="post">
                                     <select name="status" class="py-1">
@@ -58,11 +66,11 @@
                                         <option value="shipping" <%= data.orderStatus === 'Shipping' ? 'selected' : '' %>>Shipping</option>
                                         <option value="delivered" <%= data.orderStatus === 'Confirmed' ? 'selected' : '' %>>delivered</option>
                                     </select>
-                                    <button type="submit" class="btn btn-success" style="<%= data.orderStatus === 'Cancelled' ? 'display: none;' : '' %>">Update Status</button>
+                                    <button type="submit" class="Add-button text-white" style="<%= data.orderStatus === 'Cancelled' ? 'display: none;' : '' %>">Update Status</button>
                                 </form>
                             </td>
                             
-                              <td><a href="/admin/order-details/<%= data._id %>"class="btn btn-info">Order details</a></td>
+                              <td><a href="/admin/order-details/<%= data._id %>"class="btn btn-info ">Order details</a></td>
                           </tr>
                       <% }); %>
                   </tbody>

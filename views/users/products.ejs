@@ -1,22 +1,53 @@
 <%-include('../partials/userheader') %>
   <!-- View all products -->
+  <style>
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+    }
 
-  <body style=" background-color: #D5E6E5;">
+    hr {
+      width: 70%;
+      border: 1px solid #000;
+    }
+
+    .fs--1:hover {
+   
+      cursor: pointer;
+
+    }
+    .card-products{
+  transition: transform 0.3s ease; 
+  transform: scale(.8);
+}
+.card-products:hover  {
+  transform: scale(.86);
+}
+
+  /* Add your custom styles for the previous and next links */
+.custom-link {
+  background-color: #8bb7e4; /* Light background color */
+}
+
+
+  </style>
+
+  <body>
 
 
     <section>
       <div class="container-fluid p-0 d-flex">
         <!-- sidebar  -->
-        <div class="col-md-2  d-flex flex-column" style="background: #D9D9D9; ">
+        <div class="col-md-2   d-flex flex-column">
           <!-- Side section content -->
 
           <!-- search feature -->
-          <div class="search-content-admin d-flex mx-auto my-4 bg-light ">
-            <form action="/products/search" method="post">
-              <input type="text" class="search px-4 py-2" placeholder="Search category" name="search">
-              <button type="submit" class="search-btn mx-0"><i class="fa fa-search fa-xl"></i></button>
-            </form>
+          <div class="search-content-admin d-flex mx-2 my-4   border" >
+            <input id="searchInput" type="text" class="search px-2 py-2"  placeholder="Search products" name="search">
+            <button type="submit" class="search-btn" onclick="searchProducts()"><i class="fa fa-search fa-xl" ></i></button>
           </div>
+
           <!-- categories  -->
           <div class="d-flex">
             <a href="#" class="text-decoration-none text-dark">
@@ -24,13 +55,16 @@
             </a>
             <i class="fa-solid fa-chevron-down pt-1 ms-auto me-5 " id="toggleCategories"></i>
           </div>
-          <ul id="categoriesList" class="list-unstyled class ps-4">
-            <% categories.forEach((cat)=> { %>
-              <li>
-                <a href="/products?category=<%= cat._id %>" class="text-decoration-none text-dark">
-                  <%= cat.category %>
-                </a>
-              </li>
+          <ul id="categoriesList" class="list-unstyled class ps-4 fs--1">
+            <% categories.forEach((cat) => { %>
+              <div class="fw-600 category-item">
+                <li>
+                  <div class="text-decoration-none text-dark fs--1" onclick="categories('<%= cat._id %>')" id="<%= cat._id %>">
+                    <%= cat.category %>
+                  </div>
+                </li>
+              </div>
+              <hr>
               <% }); %>
           </ul>
           <!-- filter by price -->
@@ -40,51 +74,65 @@
             </a>
             <i class="fa-solid fa-chevron-down pt-1 ms-auto me-5 " id="togglePrice"></i>
           </div>
-          <!-- <ul id="PriceList" class="list-unstyled class ps-4" style="display: none;">
-                <li> <a class="dropdown-item" href="/filter?price=a-z" >
-                    <p>Lowest to Highest </p>
-                </a></li>
-            <li><a class="dropdown-item" href="/filter?price=z-a">
-                    <p>Highest to Lowest </p>
-                </a></li>
-            </ul> -->
 
-          <ul id="PriceList" class="list-unstyled class ps-4" style="display: none;">       
-              <li> <a class="dropdown-item" href="/products?price=a-z">
-                <p>Lowest to Highest </p>
-            </a>
+          <ul id="PriceList" class="list-unstyled class ps-4 fs--1" style="display: none;">
+            <!-- <li> <a class="dropdown-item" href="/products?price=a-z">
+                <p class="m-0">Lowest to Highest </p>
+              </a>
+            </li> -->
+
+            <!-- try here -->
+            <li class="dropdown-item"> 
+              <p class="m-0"  onclick="acending()">Lowest to Highest </p>
+              <input type="text"  id="catId" style="display: none;">
           </li>
-            <li><a class="dropdown-item" href="/products?price=z-a">
-              <p>Highest to Lowest </p>
-          </a>
-        </li>
+            <!-- end here -->
+            <hr>
+            <li><a class="dropdown-item" >
+                <p class="m-0"  onclick="decenting()">Highest to Lowest </p>
+                <input type="text"  id="catId" style="display: none;">
+              </a>
+              <hr>
+            </li>
           </ul>
+
         </div>
+
+        <!-- sidebar ends  -->
 
         <div class="col-md flex-grow-1 main-section p-5">
           <!-- Main section content -->
 
           <div class="container product-cards">
-            <div class="row">
+            <div id="cards" class="row">
               <!-- cards -->
-              <% products.forEach(product=> { %>
-                <div class="col-md-3 mb-4">
+              <% products.forEach(function (product, index) { %>
+                <div class="col-md-3 mb-4 product-container" id="productContainer_<%= index %>">
                   <div class="card card-products h-100">
                     <div class="card-body d-flex flex-column shadow">
-                      <a href="/users/single-product/<%= product._id %>">
-                        <img src="/<%= product.images[0] %>" class="card-img-top" alt="Product Image">
+                      <a href="/product-details/<%= product._id %>">
+                        <img id="productImg_<%= index %>" src="/<%= product.images[0] %>"
+                          class="card-img-top product-image" alt="Product Image">
                       </a>
                       <div class="card-text flex-grow-1">
-                        <h5 class="card-title fw-bold mt-2">
+                        <h5 id="productName_<%= index %>" class="card-title fw-bold mt-2">
                           <%= product.name %>
                         </h5>
                       </div>
-                      <p class="card-text mt-3 fw-bold">Price: Rs <%= product.price %>
+                      <p id="productPrice_<%= index %>" class="card-text mt-3 fw-bold">Price: Rs <%= product.price %>
                       </p>
-                      <div>
-                        <button type="button" class="cart-button btn-block mt-3">Add to Cart</button>
-                        <a href="#" class="ms-2"><i class="fa-solid fa-heart fa-xl" style="color: #4b1c70;"></i></a>
+                                        
+                      <% if (product.quantity > 0) { %>
+                        <div>
+                          <button class="cart-button btn-block mt-3 add-to-cart-button" data-product-id="<%= product._id %>">Add To Cart</button>
+                          <a href="#" class="ms-2"><i class="fa-solid fa-heart fa-xl" onclick="addtoWishlist('<%= product._id %>')" style="color: #4b1c70;"></i></a>
+                        </div>
+                      <% } else { %>
+                        <div class="">
+                          <!-- <button class="cart-button btn-block mt-3 add-to-cart-button" disabled>Out of Stock</button> -->
+                          <p class="text-danger">Out of stock</p>
                       </div>
+                      <% } %>
                     </div>
                   </div>
                 </div>
@@ -92,32 +140,32 @@
             </div>
           </div>
 
-          <div class="d-flex justify-content-center">
-            <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
-              <ul class="pagination">
+          <div id="pagination" class="d-flex justify-content-center">
+            <nav aria-label="Page navigation example" class="d-flex justify-content-center   mt-3">
+              <ul class="pagination ">
                 <% if (page> 1) { %>
-                  <li class="page-item">
-                    <a class="page-link" href="?page=<%= page - 1 %>&limit=8" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
+                  <li class="page-item ">
+                    <a class="page-link custom-link" href="?page=<%= page - 1 %>&limit=8" aria-label="Previous">
+                      <span aria-hidden="true" >&laquo;</span>
                     </a>
                   </li>
                   <% } else { %>
-                    <li class="page-item disabled">
+                    <li class="page-item  disabled">
                       <span class="page-link" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
+                        <span aria-hidden="true" >&laquo;</span>
                       </span>
                     </li>
                     <% } %>
                       <% for (let i=1; i <=totalPages; i++) { %>
-                        <li class="page-item <%= page === i ? 'active' : '' %>">
-                          <a class="page-link" href="?page=<%= i %>&limit=8">
+                        <li class="page-item <%= page === i ? 'active' : '' %> ">
+                          <a class="page-link " href="?page=<%= i %>&limit=8">
                             <%= i %>
                           </a>
                         </li>
                         <% } %>
                           <% if (page < totalPages) { %>
                             <li class="page-item">
-                              <a class="page-link" href="?page=<%= page + 1 %>&limit=8" aria-label="Next">
+                              <a class="page-link custom-link" href="?page=<%= page + 1 %>&limit=8" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                               </a>
                             </li>
@@ -128,20 +176,20 @@
                                 </span>
                               </li>
                               <% } %>
-
               </ul>
             </nav>
           </div>
         </div>
       </div>
-
-
-
-
     </section>
 
 
+
+
+
+
     <script>
+
       document.getElementById('toggleCategories').addEventListener('click', function () {
         var categoriesList = document.getElementById('categoriesList');
         categoriesList.style.display = (categoriesList.style.display === 'none' || categoriesList.style.display === '') ? 'block' : 'none';
@@ -151,6 +199,225 @@
         var PriceList = document.getElementById('PriceList');
         PriceList.style.display = (PriceList.style.display === 'none' || PriceList.style.display === '') ? 'block' : 'none';
       })
+
+
+
+      var previousCategoryId = null;
+
+function categories(categoryId) {
+
+
+
+  // Reset font weight for the previous category
+  if (previousCategoryId) {
+    $('#' + previousCategoryId).css('font-weight', 'normal');
+  }
+
+  $.ajax({
+    url: '/selectCategory',
+    method: 'GET',
+    data: {
+      categoryId
+    },
+    success: function (response) {
+      if (response.success) {
+
+ 
+         const value = document.getElementById('catId').value = response.categoryId
+           
+ 
+
+    
+
+
+        // Hide all product containers
+        $('.product-container').hide();
+
+        // Highlight the selected category
+        $('#' + categoryId).css('font-weight', '600');
+
+        // Assuming response.products is an array of products
+        response.products.forEach(function (product, index) {
+          // Create unique IDs or use classes for each product
+          var productImgId = 'productImg_' + index;
+          var productNameId = 'productName_' + index;
+          var productPriceId = 'productPrice_' + index;
+          var productContainerId = 'productContainer_' + index;
+
+          $('#' + productContainerId).show();
+
+          // Update the corresponding elements
+          document.getElementById(productImgId).src = '/' + product.images[0];
+          document.getElementById(productNameId).innerText = product.name;
+          document.getElementById(productPriceId).innerText = 'Price: Rs ' + product.price;
+         
+        });
+
+        // Update the previousCategoryId for the next click
+        previousCategoryId = categoryId;
+      }
+    }
+  });
+
+}
+
+
+
+//  search products 
+
+function searchProducts() {
+  const searchInput = document.getElementById('searchInput').value
+  $.ajax({
+    url: '/products/search',
+    method: 'POST',
+    data: {
+      searchInput
+    },
+    success: function (response) {
+      categoryId = response.catId
+      categories(categoryId)
+    }
+});
+}
+
+
+function acending() {
+  const catId =  document.getElementById('catId').value
+
+  $.ajax({
+    url: '/filterAcenting',
+    method: 'GET',
+    data:{
+      catId
+    },
+    success: function (response) {
+    
+        // Hide all product containers
+        $('.product-container').hide();
+
+
+        // Assuming response.products is an array of products
+        response.products.forEach(function (product, index) {
+          // Create unique IDs or use classes for each product
+          var productImgId = 'productImg_' + index;
+          var productNameId = 'productName_' + index;
+          var productPriceId = 'productPrice_' + index;
+          var productContainerId = 'productContainer_' + index;
+
+          $('#' + productContainerId).show();
+
+          // Update the corresponding elements
+          document.getElementById(productImgId).src = '/' + product.images[0];
+          document.getElementById(productNameId).innerText = product.name;
+          document.getElementById(productPriceId).innerText = 'Price: Rs ' + product.price;
+         
+        });
+    
+    }
+});
+}
+
+
+function decenting() {
+  const catId =  document.getElementById('catId').value
+ 
+  $.ajax({
+    url: '/filterDecenting',
+    method: 'GET',
+    data:{
+      catId
+    },
+    success: function (response) {
+    
+    
+        // Hide all product containers
+        $('.product-container').hide();
+
+
+        // Assuming response.products is an array of products
+        response.products.forEach(function (product, index) {
+          // Create unique IDs or use classes for each product
+          var productImgId = 'productImg_' + index;
+          var productNameId = 'productName_' + index;
+          var productPriceId = 'productPrice_' + index;
+          var productContainerId = 'productContainer_' + index;
+
+          $('#' + productContainerId).show();
+
+          // Update the corresponding elements
+          document.getElementById(productImgId).src = '/' + product.images[0];
+          document.getElementById(productNameId).innerText = product.name;
+          document.getElementById(productPriceId).innerText = 'Price: Rs ' + product.price;
+         
+        });
+    
+    }
+});
+}
+
+
+//=================================
+// cart 
+    document.querySelectorAll('.add-to-cart-button').forEach(button => {
+      button.addEventListener('click', function (event) {
+
+        const productId = this.getAttribute('data-product-id');
+
+
+        $.ajax({
+          url: '/addtocart/' + productId,
+          method: 'POST',
+          success: function (response) {
+
+            // alert('Product added to cart');
+            // swal("", "Product is added to cart", "success");
+            // updateCartQuantity();
+            if (response.success) {
+           
+              const count = document.getElementById("cartQuantity");
+              const currentCount = parseInt(count.innerHTML);
+
+              // Update the cart quantity on the page
+              count.innerHTML = currentCount + response.cartQuantity;
+              swal("", "Product is added to cart", "success");
+            }else if(response.message){
+              const count = document.getElementById("cartQuantity");
+              count.innerHTML =  response.cartQuantity;
+              swal("", "Product is already in cart");
+            }
+          },
+          error: function (error) {
+            console.log('Error adding product to cart:', error);
+          }
+        });
+      });
+    });
+
+
+
+
+    function addtoWishlist(productId){
+     
+      $.ajax({
+          url: '/addtowishlist/' + productId,
+          method: 'POST',
+          success: function (response) {
+            if(response){
+             
+              swal("","product already exists")
+            }
+            if (response.success) {
+           
+              swal("", "Product is added to wishlist", "success");
+            }
+          },
+          error: function (error) {
+            console.log('Error adding product to wishlist : ', error);
+          }
+        });
+    }
+
+
     </script>
 
   </body>

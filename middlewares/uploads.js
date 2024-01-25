@@ -22,7 +22,6 @@ var upload = multer({
         ){
             callback(null,true)
         }else{
-            console.log('only jpg & png file supported');
             callback(null,false)
         }
     },limits:{

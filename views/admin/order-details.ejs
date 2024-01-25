@@ -20,6 +20,14 @@
           <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
         </li>
         <hr>
+        <li class="">
+          <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/coupon">coupon</a>
+        </li>
+        <hr>
+        <li class="">
+          <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/salesReport">sales Report</a>
+        </li>
+        <hr>
       </ul>
     </div>
   </div>
@@ -43,17 +51,21 @@
       <ul class="list-unstyled">
         <li>Order ID : <%= order_detail._id.toString().slice(-6) %></li>
         <li>Order Date : <%= order_detail.date.toLocaleDateString('en-GB') %></li>
-        <li>Total Price : <%= order_detail.totalPrice %></li>
+        <li>Total Price : <span class="fw-bold">Rs : </span><%= order_detail.totalPrice %></li>
         <li></li>
       </ul>
     </div>
     <div class="col">
       <h5 class="">Shipping address</h5>
+     
       <ul class="list-unstyled">
-        <li><%= `${address.fullName}, ${address.mobile}, ` %></li>
-        <li><%= ` ${address.street}, ${address.village}, ${address.city}`%></li>
-        <li><%= `Near ${address.landmark}, PIN Code: ${address.pinCode}`%></li>
+        <% address.forEach(item => { %>
+        <li><%= `${item.fullName}, ${item.mobile}, ` %></li>
+        <li><%= ` ${item.street}, ${item.village}, ${item.city}`%></li>
+        <li><%= `Near ${item.landmark}, PIN Code: ${item.pinCode}`%></li>
+        <% }); %>
       </ul>
+ 
     </div>
     </div>
   </div>
@@ -82,23 +94,18 @@
                     </td>
                       <td><%= data.productId.name %></td>
                       <td><%= data.quantity %></td>
-                      <td id="totalPrice"><%= data.quantity * data.productId.price %></td>
+                      <td id="totalPrice"><span class="fw-bold">Rs : </span><%= data.quantity * data.productId.price %></td>
                       
                   </tr>
               <% }); %>
           </tbody>
       
           </table>
-  </form>
-  
-     
-      
+  </form> 
       </div>
      
     </section>
   </div>
 </div>
  
-
-
   <script src="/static/js/admin/product.js"></script>

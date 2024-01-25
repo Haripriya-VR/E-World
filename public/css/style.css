@@ -1,12 +1,8 @@
   @import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;500&display=swap');
-
   * {
       font-family: 'Frank Ruhl Libre', serif;
       
   }
- .body-content{
-    background-color: #D5E6E5;
- }
 
   .navbar-brand {
       font-weight: 800;
@@ -16,7 +12,7 @@
       color: #ffffff;
   }
 
-  .navbar {
+ .navbar {
       background-color: #4B1C70;
       display: flex;
       align-items: center;
@@ -44,12 +40,13 @@
 /* banner section */
 
 .banner-container {
-    background: #AB79D3; /* Purple background color */
-    height: 400px;
+    height: 450px;
+    width: 70%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: white;
+    background-color: #f9f3f3;
   }
 
   .banner-text {
@@ -84,11 +81,7 @@
 
 /* try */
 
-.banner-container{
-    height: 450px;
-    width: 100%;
-    background-color:#d9d9d9
-}
+
 .images-banner{
     object-fit: cover;
 }
@@ -166,7 +159,7 @@
 }
 
 .input-box{
-    width: 70%;
+    width: 50%;
     margin: auto;
 }
 .btn1   {

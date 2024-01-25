@@ -23,8 +23,8 @@ const cartSchema = Schema({
     }],
 
     coupon : {
-        type : mongoose.Schema.Types.ObjectId,
-        requried : false
+        type : mongoose.Schema.Types.ObjectId
+        
     }
 })
 

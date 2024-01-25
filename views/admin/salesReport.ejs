@@ -1,0 +1,158 @@
+<%-include('../partials/adminheader') %>
+  <div class="row px-0 m-0">
+
+    <!-- sidebar -->
+    <div class="col-md-2 sidebar " id="sidenav" >
+      <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+        <ul class="list-unstyled ">
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/category">Categories</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/products">products</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/customers">customers</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/coupon">coupon</a>
+          </li>
+          <hr>
+          <li class="">
+            <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/salesReport">sales Report</a>
+          </li>
+          <hr>
+        </ul>
+      </div>
+    </div>
+    <!-- main content  -->
+    <div class="col ">
+      <!-- sales report -->
+
+      <div class="container bg-light p-4 rounded my-5">
+
+        <div class="date-range">
+          <div class="header">
+            <h5 class="title">Select Date Range</h5>
+          </div>
+          <div class="body py-3">
+            <form id="salesReport" action="/admin/salesReport/download-sales-report" method="post">
+              <label for="startDate" class="fw-bold">Start Date:</label>
+              <input type="date" name="startDate" id="startDate" required>
+              <label for="endDate" class="fw-bold">End Date:</label>
+              <input type="date" name="endDate" id="endDate" required>
+            </form>
+          </div>
+          <div class="footer d-flex justify-content-start">
+
+            <button type="submit" form="salesReport" class="Add-button text-white me-2 px-4">Generate Report</button>
+            <button type="button" class="Add-button text-white px-4" onclick="printSalesReport('print')">Print</button>
+          </div>
+        </div>
+
+        <h2 class="py-2">Sales Report</h2>
+        <div class="table-responsive" id="print">
+
+          <table class="table" id="sales-table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Order ID</th>
+                <th scope="col">Payment</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Order Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% sales.forEach((data)=> { %>
+                <tr>
+                  <td>
+                    <%= data.date.toLocaleDateString('en-GB') %>
+                  </td>
+                  <td>
+                    <%= data._id.toString().slice(-6) %>
+                  </td>
+                  <td>
+                    <%= data.paymentMethod %>
+                  </td>
+                  <td><span class="fw-bold">Rs : </span>
+                    <%= data.totalPrice %>
+                  </td>
+                  <td>
+                    <%= data.orderStatus %>
+                  </td>
+                </tr>
+                <% grandTotal += data.totalPrice; %>
+                <% }); %>
+            </tbody>
+          </table>
+          <hr>
+          <div class="my-5 d-flex justify-content-between me-5">
+            <h4>Grand Total</h4>
+            <span><span class="fw-bold"><%= grandTotal %></span></span>
+          </div>
+          <hr>
+
+        </div>
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+          <ul class="pagination">
+            <% if (page> 1) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= page - 1 %>&limit=5" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <% } else { %>
+                <li class="page-item disabled">
+                  <span class="page-link" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </span>
+                </li>
+                <% } %>
+                  <% for (let i=1; i <=totalPages; i++) { %>
+                    <li class="page-item <%= page === i ? 'active' : '' %>">
+                      <a class="page-link" href="?page=<%= i %>&limit=5">
+                        <%= i %>
+                      </a>
+                    </li>
+                    <% } %>
+                      <% if (page < totalPages) { %>
+                        <li class="page-item">
+                          <a class="page-link" href="?page=<%= page + 1 %>&limit=5" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                        <% } else { %>
+                          <li class="page-item disabled">
+                            <span class="page-link" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                            </span>
+                          </li>
+                          <% } %>
+
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // download sales report
+
+    function printSalesReport(divName) {
+      const printContents = document.getElementById(divName).innerHTML
+      const originalContents = document.body.innerHTML
+      document.body.innerHTML = printContents;
+      window.print()
+      document.body.innerHTML = originalContents
+      return
+    }
+  </script>

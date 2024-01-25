@@ -1,29 +1,71 @@
 <%-include('../partials/profileheader') %>
-<body>
+<style>
+  @media (max-width: 991px) {
+img{
+  display: none;
+}
+  }
+</style>
+  <body>
 
-    
-<div class="container-fluid main-content">
-    <div class="  signup-content   my-5  d-flex" >
-        <img src="/static/images/signup-image.png" width="500" alt="img">
-    <div class="container signup-details">
-      <h2 class="fw-bold text-white text-center py-4">Log in</h2>
-      <form action="/login" method="post" id="form">
-         <div class="form-group input-control input-box py-4 ">
-            <input type="email" id="email" name="email" class="form-control" placeholder="email" required>
-            <div class="error"></div>
+
+    <div class="container-fluid main-content">
+      <div class="  signup-content   my-5  d-flex">
+      
+        <img src="/static/images/signup-image.png" width="50%" alt="img">
+     
+        <div class="container signup-details">
+          <h2 class="fw-bold text-white text-center py-4">Log in</h2>
+          <form id="form">
+            <div class="form-group input-control input-box py-4 ">
+              <input type="email" id="email" name="email" class="form-control" placeholder="email" required>
+
+            </div>
+            <div class="form-group input-control input-box py-2 ">
+              <input type="password" id="password" name="password" class="form-control" placeholder="password" required>
+              <div id="error" class="error"></div>
+
+            </div>
+            <div class="form-group input-control input-box py-4 ">
+              <button class="btn1 shadow text-white" onclick="login()" type="submit" value="Sign In">log
+                In</button>
+            </div>
+            <p class="text-center py-4">Don't you have an account?<a href="/signup">sign up</a></p>
+          </form>
         </div>
-        <div class="form-group input-control input-box py-2 ">
-            <input type="password" id="password" name="password" class="form-control" placeholder="password" required>
-            <div class="error"></div>
-             
-        </div>
-        <div class="form-group input-control input-box py-4 ">
-           <button class="btn1 shadow text-white" type="submit" value="Sign In" >log In</button>
-        </div>
-        <p class="text-center py-4">Don't you have an account?<a href="/signup">sign in</a></p>
-    </form>
+      </div>
+
+
     </div>
-    </div>
-    
-    
-</div>
+          <!-- Ajax liberary -->
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+
+
+      function login() {
+        preventDefault()
+
+        const email = document.getElementById('email').value
+        const password = document.getElementById('password').value
+        $.ajax({
+          url: '/loginpost',
+          method: 'POST',
+          data: {
+            email,
+            password
+          },
+          success: function (response) {
+            if (response.errorMessage) {
+              document.getElementById('error').innerHTML = response.errorMessage
+            }else{
+              window.location = '/';
+            }
+          },
+        });
+      }
+
+      function preventDefault() {
+        event.preventDefault();
+      }
+    </script>

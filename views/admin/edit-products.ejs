@@ -1,93 +1,182 @@
 <%-include('../partials/adminheader') %>
 
+
+<style>
+  /* Style for the larger preview div */
+  #largePreview {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+  }
+
+  #largePreview img {
+    max-width: 80%;
+    max-height: 80%;
+  }
+</style>
+
   <body>
-    <div class="container-fluid main-content ">
-      <div class="  product-content shadow  my-5  d-flex">
-        <div class="container signup-details">
-          <h2 class="fw-bold text-dark text-center py-4">Edit Products</h2>
-          <form action="/admin/edit-products/<%= product._id %>" method="post" id="form" enctype="multipart/form-data"
-            onsubmit="return validateProductForm()">
-            <div class="form-group input-control input-box py-2 ">
-              <label for="productname">Product Name:</label>
-              <input type="text" id="productname" name="productname" class="form-control" value="<%= product.name %>">
-              <div class="error"></div>
-
-            </div>
-
-            <div class="form-group input-control input-box py-2">
-              <label for="Category">Select Category:</label>
-              <select id="Category" name="Category" class="form-control">
-                <option value="" disabled>Select Category</option>
-                <% categories.forEach((cat)=> { %>
-                  <option value="<%= cat.category %>" <%=cat.category===product.category ? 'selected' : '' %>><%=
-                      cat.category %>
-                  </option>
-                  <% }); %>
-              </select>
-              <div class="error"></div>
-
-            </div>
-            <!-- price -->
-            <div class="form-group input-control input-box py-2 ">
-              <label for="price">Price:</label>
-              <input type="number" id="price" name="price" class="form-control" value="<%= product.price %>">
-              <div class="error"></div>
-            </div>
-
-            <div class="form-group input-control input-box py-2">
-              <label for="quantity">stock:</label>
-              <input type="text" id="quantity" name="quantity" class="form-control" value="<%= product.quantity %>">
-              <div class="error"></div>
-
-            </div>
-            <div class="form-group input-control input-box py-2">
-              <div class="image">
-                <% for (let i=1; i <=3; i++) { %>
-                  <div class="inner-img d-flex">
-                    <label for="productimage<%= i %>">Choose Image <%= i %>:</label>
-                    <input type="file" id="productimage<%= i %>" name="productImages"
-                      class="form-control-file productimage" onchange="getImagePreview(event, 'preview<%= i %>')"
-                      multiple>
-                    <div id="preview<%= i %>" class="preview-container"></div>
+    <div class="row px-0 m-0">
+      <div class="col-md-2 sidebar " id="sidenav" >
+          <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
+            <ul class="list-unstyled ">
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/category">Categories</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/products">products</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/customers">customers</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/coupon">coupon</a>
+              </li>
+              <hr>
+              <li class="">
+                <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/salesReport">sales Report</a>
+              </li>
+              <hr>
+            </ul>
+          </div>
+      </div>
+      <div class="col">
+        <div class="container-fluid  ">
+          <div class="  product-content shadow  my-5  d-flex">
+            <div class="container signup-details">
+              <h2 class="fw-bold text-dark text-center py-4">Edit Products</h2>
+              <form action="/admin/edit-products/<%= product._id %>" method="post" id="form" enctype="multipart/form-data"
+                onsubmit="return validateProductForm()">
+                <div class="form-group input-control input-box py-2 ">
+                  <label for="productname">Product Name:</label>
+                  <input type="text" id="productname" name="productname" class="form-control" value="<%= product.name %>" required>
+                  <div class="error"></div>
+    
+                </div>
+    
+                <div class="form-group input-control input-box py-2">
+                  <label for="Category">Select Category:</label>
+                  <select id="Category" name="Category" class="form-control" required>
+                    <option value="" disabled>Select Category</option>
+                    <% categories.forEach((cat)=> { %>
+                      <option value="<%= cat.category %>" <%=cat.category===product.category ? 'selected' : '' %>><%=
+                          cat.category %>
+                      </option>
+                      <% }); %>
+                  </select>
+                  <div class="error"></div>
+    
+                </div>
+                <!-- price -->
+                <div class="form-group input-control input-box py-2 ">
+                  <label for="price">Price:</label>
+                  <input type="number" id="price" name="price" class="form-control" value="<%= product.price %>" required>
+                  <div class="error"></div>
+                </div>
+    
+                <div class="form-group input-control input-box py-2">
+                  <label for="quantity">stock:</label>
+                  <input type="text" id="quantity" name="quantity" class="form-control" value="<%= product.quantity %>" required>
+                  <div class="error"></div>
+    
+                </div>
+    
+  
+    
+                <!-- Image Upload -->
+                <div class="form-group input-control input-box py-2">
+                  <div class="image">
+                    <% for (let i=1; i <=3; i++) { %>
+                      <div class="inner-img d-flex">
+                        <label for="productimage<%= i %>">Choose Image <%= i %>:</label>
+                        <input type="file" id="productimage<%= i %>" name="productImages"
+                          class="form-control-file productimage" onchange="getImagePreview(event, 'preview<%= i %>')"
+                          multiple >
+                          <div id="preview<%= i %>" class="preview-container">
+                            <% if (product.images && product.images[i - 1]) { %>
+                              <img src="\<%= product.images[i - 1] %>" alt="Existing Image" height="50px" width="50px">
+                            <% } %>
+                          </div>
+                      </div>
+                      <% } %>
                   </div>
-                  <% } %>
-              </div>
+                </div>
+    
+                <!-- Description Textarea -->
+                <div class="form-group input-control input-box py-3">
+                  <label for="productdescription">Product Description:</label>
+                  <textarea id="productdescription" name="description" class="form-control"
+                     value="<%= description %>" required> <%= description %>
+                    </textarea>
+                </div>
+                <div class="form-group input-control input-box pt-3 ">
+                  <button class="btn1 shadow text-white mb-5" type="submit" onclick="validateProductForm()" value="Sign In">Edit Products</button>
+                </div>
+    
+              </form>
             </div>
-
-
-            <!-- Description Textarea -->
-            <div class="form-group input-control input-box py-3">
-              <label for="productdescription">Product Description:</label>
-              <textarea id="productdescription" name="description" class="form-control"
-                placeholder="Enter product description" value="<%= product.description %>"></textarea>
-            </div>
-            <div class="form-group input-control input-box pt-3 ">
-              <button class="btn1 shadow text-white" type="submit" value="Sign In">Edit Products</button>
-            </div>
-
-          </form>
+          </div>
         </div>
       </div>
-    </div>
-    <script>
-      function validateForm() {
-        // You can add more advanced validation if needed
-        return true; // Return true to submit the form, or false to prevent it
-      }
+  </div>
+  
 
-      function validateProductForm() {
-        // Basic validation for non-negative values in price and stock fields
-        const price = document.getElementById('price').value;
-        const stock = document.getElementById('stock').value;
+  <script>
 
-        if (price < 0 || stock < 0) {
-          alert('Please enter non-negative values for price and stock.');
-          return false; // Prevent form submission
-        }
+    // product form validation
 
-        return true; // Allow form submission
-      }
-    </script>
+  function validateForm() {
+    const price = document.getElementById('price').value.trim();
+    const quantity = document.getElementById('quantity').value.trim();
+
+    let hasErrors = false;
+
+    // Validation for Price
+    if (price === '' || isNaN(price) || parseFloat(price) <= 0) {
+      setError('price', 'Enter a valid price');
+      hasErrors = true;
+    }
+
+    // Validation for Stock/Quantity
+    if (quantity === '' || isNaN(quantity) || parseInt(quantity) < 0) {
+      setError('quantity', 'Enter a valid quantity');
+      hasErrors = true;
+    } 
+
+
+  return !hasErrors;
+  }
+
+
+  // Function to set error messages
+  function setError(elementId, message) {
+    const inputControl = document.getElementById(elementId).parentElement;
+    const errorDisplay = inputControl.querySelector('.error');
+    errorDisplay.innerText = message;
+    inputControl.classList.add('error');
+  }
+
+  // Event listener for form submission
+  const form = document.getElementById('form');
+  form.addEventListener('submit', (e) => {
+    if (!validateForm()) {
+      e.preventDefault();
+    }
+  });
+</script>
 
     <script src="/static/js/admin/product.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

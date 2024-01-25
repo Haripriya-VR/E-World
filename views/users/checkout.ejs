@@ -1,15 +1,14 @@
 <%-include('../partials/userheader') %>
 
-
-  <body style=" background-color: #D5E6E5;">
+  <body >
 
     <form id="checkout-form">
-      <div class="container row m-auto my-5 p-5 order-container w-35">
+      <div class="container row m-auto my-5 p-5 shadow w-35">
 
-        <div class="col">
+        <div class="col-md-6">
           <% if (Address && Address.length> 0) { %>
             <% Address.forEach((item, index)=> { %>
-              <div style="background-color: #bcbcbc62; padding: 20px;" class="row pl-lg-5 address mb-4">
+              <div style="padding: 20px;" class="row border pl-lg-5 address mb-4">
                 <label for="address-<%= item._id %>">
                   <input type="radio" id="address-<%= item._id %>" name="addressId" value="<%= item._id %>" <% if
                     (index===0) { %>checked<% } %>
@@ -25,9 +24,26 @@
                     <h5>Add Address</h5>
                   </a>
         </div>
-        <div class="col">
-
+        <div class="col-md-6">
           <h3>Your Order</h3>
+          <hr>
+          <div class="container ">
+            <h5 class="fw-bold  my-2">Discount coupons</h5>
+            <div>
+              <button class="btn btn-danger w-75 my-3 ">Use Available Coupons</button>
+              </div>
+            <form  class="ms-2 b">
+              <div class="d-flex">
+                <input type="text"class="border rounded-start" id="coupon-input" placeholder="coupon code" name="couponCode"
+                  class="coupon-input w-50 rounded-start">
+                <button  class="couppon-input-btn  px-4 py-2 bg-info fw-bold rounded-end"
+                  onclick=" preventDefault() ;applyCoupon()">Apply</button>
+                
+              </div>
+            </form>
+            <div id="coupon-message" class="coupon-message error"></div>
+          </div>
+          
           <hr>
           <div class="d-flex justify-content-between">
             <h5 class="fw-bold">Product</h5>
@@ -46,20 +62,36 @@
               <% }); %>
 
                 <ul class="list-unstyled">
-                  <li class="pt-2 d-flex justify-content-between">
-                    Subtotal <span class="text-dark">₹ <%= cartTotal %></span>
+                  <li class="pt-2 d-flex justify-content-between" >
+                    Subtotal <span class="text-dark" id="subTotal"> ₹<%= cartTotal %></span>
                   </li>
                   <li class="pt-2 d-flex justify-content-between">
-                    Coupon Discount <span class="text-dark">₹ 0</span>
+                    Coupon Discount <span class="text-dark" id="couponDiscount">₹ 0</span>
                   </li>
                   <li class="pt-2 d-flex justify-content-between">
-                    Total <span class="text-dark">₹ <%= cartTotal %></span>
+                    Total <span class="text-dark" id="dicountTotal">₹ <%= cartTotal %></span>
                   </li>
                 </ul>
 
                 <% } else { %>
                   <p>Your cart is empty.</p>
                   <% } %>
+
+                  <hr>
+                  <% if( users.wallet && users.wallet> 0 ) { %>
+                    <ul class="checkout__total__all">
+                      <li class="list-unstyled">
+                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                          <div>
+                            <input type="checkbox" id="wallet" name="wallet" value="<%= users.wallet %>">
+                            <label style="font-weight: 700;" for="wallet">Use wallet balance</label>
+                          </div>
+                          <div> ₹ <%= Wallet %> </div>
+                        </div>
+                      </li>
+                    </ul>
+                    <hr style="height: 1px;background-color: #83837f;border: none;">
+                    <% } %>
 
                     <div>
                       <hr>
@@ -74,7 +106,6 @@
 
                       </div>
                       <br>
-                      <!-- <a href="/place-order" class="btn btn-info fw-bold w-100 ">place order</a> -->
                       <button onclick="submitForm()" class="btn btn-info fw-bold w-100 ">PLACE ORDER</button>
                     </div>
         </div>
@@ -82,7 +113,7 @@
     </div>
   </body>
 
-
+  <%-include('../partials/userFooter') %>
 
 
   <!-- razorpay -->
@@ -95,6 +126,15 @@
       try {
         const addressRadio = document.querySelector('input[name="addressId"]:checked');
         const paymentMethodRadio = document.querySelector('input[name="paymentMethod"]:checked');
+        const walletCheckbox = document.querySelector('input[name="wallet"]:checked');
+        const discountTotalValue = document.getElementById('dicountTotal').innerText;
+        const dicountTotal = parseInt(discountTotalValue.replace("₹", ""))
+        
+
+        let walletAmount
+          if (walletCheckbox) {
+            walletAmount = walletCheckbox.value
+          }
 
         if (!addressRadio || !paymentMethodRadio) {
           alert("Please select an address and payment method.");
@@ -104,16 +144,25 @@
         const addressId = addressRadio.value;
         const paymentMethod = paymentMethodRadio.value;
         const orderStatus = 'pending';
+        
 
         $("#checkout-form").submit((e) => {
           e.preventDefault();
-          $.ajax({
+          $.ajax({                                                                                                                     
             url: '/place-order',
             method: 'post',
-            data: { addressId, paymentMethod, orderStatus },
+            data: { addressId, paymentMethod,walletAmount, orderStatus,dicountTotal },
             success: (response) => {
               if (response.codSuccess) {
                 window.location.href = '/order-confirmed';
+              }else if(response.message){
+ 
+                swal({
+                text: "Order failed Product is out of Stock.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
               } else {
                 razorpayPayment(response.payment);
               }
@@ -136,10 +185,6 @@
         "image": "https://example.com/your_logo",
         "order_id": order.id,
         "handler": function (response) {
-          // alert(response.razorpay_payment_id);
-          // alert(response.razorpay_order_id);
-          // alert(response.razorpay_signature)
-
           verifypayment(response, order)
         },
         "notes": {
@@ -153,15 +198,61 @@
       rzp1.open();
     }
 
-    function verifypayment(payment, order) {
+    async function verifypayment(response, order) {
+
       $.ajax({
         url: '/verify-payment',
+        method: 'post',
         data: {
-          payment,
+          response,
           order,
         },
-        method: 'post',
+       
+        success:(response)=>{
+         if( response.paid){
+          window.location = '/order-confirmed'
+         }else{
+          window.location.reload;
+         }
+        }
       });
     }
+// ===============================================================
+function applyCoupon() {
+
+const couponCode = document.getElementById('coupon-input').value;
+const subTotal = document.getElementById('subTotal').innerText;
+
+
+const subTotalValue = parseInt(subTotal.replace("₹", ""));
+
+
+$.ajax({
+url: '/applyCoupon',
+method: 'POST',
+data: {
+couponCode: couponCode,
+subTotal: subTotalValue,
+},
+success: function (response) {
+if (response.success) {
+  document.getElementById('couponDiscount').innerText = '₹'+ response.discounted.discountAmount;
+  
+ document.getElementById('dicountTotal').innerText = "₹" + response.discounted.discountedTotal;
+
+}if(response.message){
+  document.getElementById('coupon-message').innerHTML= response.message
+}
+},
+error: function (xhr, status, error) {
+console.error('AJAX request failed:', status, error);
+},
+});
+
+}
+
+function preventDefault() {
+  event.preventDefault();
+}
 
   </script>

@@ -1,7 +1,8 @@
 <%-include('../partials/adminheader') %>
+
   <section>
     <div class="row px-0 m-0">
-      <div class="col-md-2 sidebar " id="sidenav"  style="height: 100vh;">
+      <div class="col-md-2 sidebar " id="sidenav" style="height: 100vh;">
         <div class="nav-item-list pt-3 px-3" id="navbarSupportedContent">
           <ul class="list-unstyled ">
             <li class="">
@@ -20,20 +21,28 @@
               <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/orders">orders</a>
             </li>
             <hr>
+            <li class="">
+              <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/coupon">coupon</a>
+            </li>
+            <hr>
+            <li class="">
+              <a class="nav-link active fw-bold pt-3" aria-current="page" href="/admin/salesReport">sales Report</a>
+            </li>
+            <hr>
           </ul>
         </div>
       </div>
-      <div class="col bg-primary-subtle" style="height: 100vh;">
+      <div class="col " >
         <div class="container d-flex ">
           <div class="d-flex mt-3"><h2>Product Manegement</h2></div>
-          <div class="search-content-admin d-flex m-auto   border- rounded-pill">
+          <div class="search-content-admin d-flex m-auto border  ">
             <form action="/admin/products/search" method="post">
                 <input type="text" class="search px-5 " placeholder="Search products" name="search">
                 <button type="submit" class="search-btn"><i class="fa fa-search fa-xl"></i></button>
             </form>
         </div>
           <div class="d-flex justify-content-end my-3">
-              <button class="btn btn-success"><a href="/admin/addproducts" class="text-decoration-none text-white">Add products</a></button>
+              <button class="Add-button"><a href="/admin/addproducts" class="text-decoration-none text-white">Add products</a></button>
           </div>
       </div>
         <div class="container-fluid py-2">
@@ -62,7 +71,7 @@
                         <td><%= data.name %></td>
                         <td><%= data.category ? data.category.category : 'N/A' %></td>
                         <td><%= data.quantity %></td>
-                        <td><%= data.price %></td>
+                        <td><span class="">₹ </span> <%= data.price %></td>
                         <td><a href="/admin/edit-products/<%= data._id %>"><i class="fas fa-pen-to-square"></i></a></td>
                         <% if (data.status) { %>
                           <td><a href="/admin/product-deactivate/<%= data._id %>"class="text-decoration-none" style="color: green;">list</a></td>

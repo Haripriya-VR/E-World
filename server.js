@@ -52,7 +52,7 @@ app.use('/admin',admin)
 
 
 app.use('/500',errorControl.get500)
-// app.use(errorControl.get404)
+app.use(errorControl.get404)
 
 
 // Server Runnning

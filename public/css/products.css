@@ -1,9 +1,6 @@
-body{
-    background-color: #D5E6E5;
-}
 
 .main-section{
-    background-color: #D5E6E5;
+    
     height: 100%;
     width: 100%;
 }
@@ -14,14 +11,12 @@ body{
     text-decoration: none;
     margin-top: auto;
     position: sticky;
+    
 }
 
 
 .search-content-admin form ,.search,button {
-
     height: 50px;
-
     border: none;
-    outline: none;
-    
+    outline: none; 
  }

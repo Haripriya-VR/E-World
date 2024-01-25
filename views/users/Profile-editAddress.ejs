@@ -1,8 +1,9 @@
 <%-include('../partials/profileheader') %>
 
 
+
   <body >
-    <div class="container-fluid shadow main-content ">
+    <div class="container-fluid shadow   ">
       <div class="  product-content shadow my-2 d-flex">
         <div class="container signup-details">
           <h2 class="fw-bold text-dark text-center pt-2">Edit Address</h2>
@@ -22,7 +23,7 @@
               <!-- street name -->
               <div class="form-group input-control input-box pt-2 ">
                 <label for="street_name">Street Name : </label>
-                <input type="text" id="street_name" name="street_name" class="form-control" value="<%= address.street %>" required>
+                <input type="text" id="street_name" name="street_name" class="form-control " value="<%= address.street %>" required>
                 <div class="error"></div>
               </div>
                <!-- village -->
@@ -55,12 +56,7 @@
                 <input type="text" id="district" name="district" class="form-control" value="<%= address.district %>" required>
                 <div class="error"></div>
               </div>
-               <!-- State -->
-               <div class="form-group input-control input-box py-2 ">
-                <label for="State">State : </label>
-                <input type="text" id="State" name="State" class="form-control" value="<%= address.state %>" required>
-                <div class="error"></div>
-              </div>
+             
               <div class="form-group input-control input-box py-3 ">
                 <button class="btn1 shadow text-white" type="submit" value="Sign In">Save Address</button>
               </div>

@@ -1,0 +1,127 @@
+<%-include('../partials/profileheader') %>
+  <style>
+    input.form-control,
+    textarea {
+      background-color: #fff;
+    }
+
+    input:disabled {
+      border: none;
+      background-color: #fff;
+      font-weight: bold;
+    }
+
+    .fs--1 a {
+      color: #000000;
+      padding: 10px;
+      text-decoration: none;
+
+    }
+
+    .fs--1 a.active {
+      background-color: #7a7a7a;
+      color: #fff;
+    }
+
+    .fs--1 a:hover {
+      background: #AB79D3;
+      color: white;
+    }
+  </style>
+
+
+<body>
+
+    <div class="container-fluid row m-auto ">
+      <div class="col-lg-3">
+        <div class="d-flex ">
+          <img src="/static/images/profile-pic.png" alt="" style="height: 200px;" class=" mt-2">
+        </div>
+        <h6 class="pt-3">
+          <%= email %>
+        </h6>
+        <div class="w-100">
+          <hr>
+        </div>
+        <div class="fs--1 fw-600">
+          <a class=" d-block mb-2" href="/profile">PROFILE</a>
+          <a id="bio-link" class=" d-block mb-2" href="/edit-bio" >EDIT BIO</a>
+          <a id="orders-link" class=" d-block mb-2" href="/profile/profile-orders">ORDERS</a>
+          <a id="wallet" class=" d-block mb-2" href="/wallet">WALLET</a>
+        </div>
+      </div>
+
+
+      <div class="col-lg-8 pt-3">
+        <div class="d-flex justify-content-between">
+            <h4 class="">wallet Balance</h4>
+            <p class="fw-bold fs-6"><%= users.wallet %></p>
+        </div>
+        <hr>
+        <h4>Wallet History</h4>
+        <table class="table table-secondary table-hover">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Amount</th>
+                <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+               <% if( users.walletHistory ) { %>
+                   <% for( let items of users.walletHistory ) { %>
+                        <tr>
+                            <td><%= items.date.toLocaleDateString('en-GB') %></td>
+                            <% if ( items.amount > 0 ) { %>
+                                <td class="text-success"><%= items.amount  %></td>
+                            <% } else { %>
+                                <td class="text-danger"><%= items.amount  %></td>
+                            <% } %>
+                            <td><%= items.message %></td>
+                        </tr>
+                   <% } %>
+               <% } %>
+            </tbody>
+            </table>
+        </div>
+
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+            <ul class="pagination">
+              <% if (page> 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= page - 1 %>&limit=8" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <% } else { %>
+                  <li class="page-item disabled">
+                    <span class="page-link" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </span>
+                  </li>
+                  <% } %>
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                      <li class="page-item <%= page === i ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>&limit=8">
+                          <%= i %>
+                        </a>
+                      </li>
+                      <% } %>
+                        <% if (page < totalPages) { %>
+                          <li class="page-item">
+                            <a class="page-link" href="?page=<%= page + 1 %>&limit=8" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                            </a>
+                          </li>
+                          <% } else { %>
+                            <li class="page-item disabled">
+                              <span class="page-link" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </span>
+                            </li>
+                            <% } %>
+            </ul>
+          </nav>
+   
+</body>
+ <%-include('../partials/userFooter') %>

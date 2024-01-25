@@ -13,7 +13,7 @@ const productSchema = Schema({
         required: true
     },
     quantity : {
-        type : String,
+        type : Number,
         required : true
     },
 
@@ -23,7 +23,8 @@ const productSchema = Schema({
     },
 
     images: {type: Array,
-    required:true},
+            required:true
+    },
     
     description : {
         type : String,

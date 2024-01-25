@@ -1,7 +1,117 @@
 <%-include('../partials/userheader') %>
+
+
+<style>
+  .product-image {
+  width: 100%; 
+  height: 200px; 
+  object-fit: contain; 
+
+  }
+  .banner__item{
+   
+  }
+  .banner__item__pic{
+   margin-top: 2rem;
+  }
+.banner__item__pic .picture{
+  width: 40%;
+}
+.banner__item__pic .apple{
+  width: 70%;
+}
+
+
+.banner__item {
+    opacity: 0;
+    transition: opacity .6s ease-in-out;
+  }
+
+  .banner__item--visible {
+    opacity: 1;
+  }
+  .banner__item {
+    transition: transform 0.3s ease; 
+  }
+
+  .banner__item:hover {
+    transform: scale(1.1); 
+  }
+.card-products{
+  transition: transform 0.3s ease; 
+  transform: scale(.8);
+}
+.card-products:hover  {
+  transform: scale(.86);
+}
+
+
+/* ============================ */
+
+
+/* Add more styles and media queries as needed */
+@media (max-width: 1039px) {
+  /* Adjust styles for smaller screens */
+  .container-fluid.banner-container {
+   display:none;
+
+  }
+
+ .insta-img{
+  display: none;
+ }
+
+  .banner-text {
+  
+    text-align: center;
+  }
+  
+  .banner-image img {
+    border-radius: 0;
+  }
+
+  /* Add more responsive styles */
+}
+
+@media (max-width: 991px) {
+  /* Adjust styles for medium-sized screens */
+  /* Add more responsive styles */
+  .insta-text{
+    display: none;
+    
+  }
+
+  .insta-banner .banner-text h1,
+.insta-banner .banner-text h3 {
+  font-size: 0.9rem; /* Adjust the font size as needed */
+  margin: 0;
+}
+  
+
+  .insta-banner .banner-image img{
+    width: 271px;
+  }
+
+ 
+
+  .insta-banner .banner-button a {
+    font-size: .1.5rem;
+    padding: 5px 5px;
+    border-radius: 5px;
+    background-color: #CE33BF; 
+  }
+}
+
+/* Add more media queries as needed for other screen sizes */
+
+
+</style>
+
+<div class="container-fluid p-0">
+
   <!-- banner -->
   <!-- Banner Section -->
-  <div class="container-fluid banner-container">
+  <div class="container-fluid   banner-container">
     <div class="banner-text">
 
       <h1 class="fw-bold text-dark mx-5 ">Find the Best Home Appliances <br/> & Digital Products</h1>
@@ -21,34 +131,76 @@
 
   <div class="container-fluid body-content">
 
-    <!-- banner sub text -->
-    <div class="banner-sub row m-auto">
-      <div class="col text-center pt-5 fw-bold">Free Shipping</div>
-      <div class="col text-center pt-5 fw-bold">We are available 24/7</div>
 
-      <div class="col text-center pt-5 fw-bold">Satisfied return</div>
 
-      <div class="col text-center pt-5 fw-bold">100% Secure payments</div>
-    </div>
+    <!-- =========================== -->
+    <!-- Banner Section Begin -->
+    <section class="collection spad">
+      <div class="container">
+          <div class="row">
+            <div class="col-lg-7 offset-lg-4">
+              <div class="banner__item shadow" >
+                  <div class="banner__item__pic d-flex justify-content-center">
+                      <img class="picture" src="/static/images/images-kv-en-purple-mo-1.png.webp" alt="" srcset="">
+                      
+                     
+
+                  </div>
+
+                  <div class="banner__item__text  ">
+                   <h2> New Arrivals </h2>
+                    <a href="/shop" class="ms-5">Shop now</a>
+                </div>
+
+                 
+              </div>
+          </div>
+          
+              <div class="col-lg-5">
+                  <div class="banner__item shadow banner__item--middle">
+                    <div class="banner__item__pic d-flex justify-content-center">
+                        <img class="picture apple" src="/static/images/appleWatch.jpeg" alt="" >
+                    </div>
+                    <div class="banner__item__text">
+                        <h2>Accessories</h2>
+                        <a href="/shop" class="ms-5" >Shop now</a>
+                    </div>
+                   
+                  </div>
+              </div>
+              <div class="col-lg-7">
+                  <div class="banner__item shadow banner__item--last">
+                    <div class="banner__item__pic d-flex justify-content-center">
+                          <img class="picture" src="/static/images/earPHone.jpg" alt="" >
+                      </div>
+                      <div class="banner__item__text">
+                          <h2>Best Selling collections</h2>
+                          <a href="/shop" class="ms-5">Shop now</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
+    <!-- Banner Section End -->
 
     <!-- cards and products -->
 
-    <div class="product-section">
+    <div class="product-section ">
 
       <div class="best selling">
         <div class="header-text fs-4 fw-bold mx-5 px-5 py-5">Best Selling</div>
-
 
         <div class="container product-cards">
           <div class="row">
             <!-- cards -->
             <% products.slice(0, 4).forEach(product=> { %>
-              <div class="col-md-3 mb-4">
-                <div class="card card-products h-100">
+              <div class="col mb-5 card_content  ">
+                <div class="card m-auto card-products h-100">
                   <div class="card-body d-flex flex-column shadow">
 
                     <a href="/product-details/<%= product._id %>">
-                      <img src="<%= product.images %>" class="card-img-top" alt="Product Image">
+                      <img src="<%= product.images %>" class="card-img-top product-image" alt="Product Image">
                     </a>
 
                     <div class="card-text flex-grow-1">
@@ -56,33 +208,41 @@
                         <%= product.name %>
                       </h5>
                     </div>
-                    <p class="card-text mt-3 fw-bold">Price: <%= product.price %>
+                    <p class="card-text mt-3 fw-bold">
+                      Price: <%= product.price %>
                     </p>
-                    <div>
-                      <button class="cart-button btn-block mt-3 add-to-cart-button"
-                        data-product-id="<%= product._id %>">Add To Cart</button>
-                      <a href="#" class="ms-2"><i class="fa-solid fa-heart fa-xl" style="color: #4b1c70;"></i></a>
-                    </div>
+                    
+                   
+                      <% if (product.quantity > 0) { %>
+                        <div>
+                          <button class="cart-button btn-block mt-3 add-to-cart-button" data-product-id="<%= product._id %>">Add To Cart</button>
+                          <i class="fa-solid fa-heart fa-xl" onclick="addtoWishlist('<%= product._id %>')" style="color: #4b1c70;"></i>
+                        </div>
+                      <% } else { %>
+                        <div class="">
+                          <!-- <button class="cart-button btn-block mt-3 add-to-cart-button" disabled>Out of Stock</button> -->
+                          <p class="text-danger">Out of stock</p>
+                      </div>
+                      <% } %>
+                   
+                    
+                   
                   </div>
                 </div>
               </div>
               <% });%>
           </div>
         </div>
-
-      </div>
-
-      <div class="today's deal">
-        <div class="header-text fs-4 fw-bold mx-5 px-5 py-5">Today's Deal</div>
-
         <div class="container product-cards">
           <div class="row">
             <!-- cards -->
-            <% products.slice(0, 4).forEach(product=> { %>
-              <div class="col-md-3 mb-4">
-                <div class="card card-products h-100">
+            <% products.slice(4,8).forEach(product=> { %>
+              <div class="col mb-4">
+                <div class="card m-auto card-products h-100">
                   <div class="card-body d-flex flex-column shadow">
-                    <img src="<%= product.images %>" class="card-img-top" alt="Product Image">
+                    <a href="/product-details/<%= product._id %>">
+                      <img src="/<%= product.images[0] %>" class="card-img-top product-image" alt="Product Image">
+                    </a>
                     <div class="card-text flex-grow-1">
                       <h5 class="card-title fw-bold mt-2">
                         <%= product.name %>
@@ -90,24 +250,103 @@
                     </div>
                     <p class="card-text mt-3 fw-bold">Price: <%= product.price %>
                     </p>
-                    <div>
-                      <button class="cart-button btn-block mt-3 add-to-cart-button"
-                        data-product-id="<%= product._id %>">Add To Cart</button>
-                      <a href="#" class="ms-2"><i class="fa-solid fa-heart fa-xl" style="color: #4b1c70;"></i></a>
+                    <% if (product.quantity > 0) { %>
+                      <div>
+                        <button class="cart-button btn-block mt-3 add-to-cart-button" data-product-id="<%= product._id %>">Add To Cart</button>
+                        <a href="#" class="ms-2"><i class="fa-solid fa-heart fa-xl" onclick="addtoWishlist('<%= product._id %>')" style="color: #4b1c70;"></i></a>
+                      </div>
+                    <% } else { %>
+                      <div class="">
+                        <!-- <button class="cart-button btn-block mt-3 add-to-cart-button" disabled>Out of Stock</button> -->
+                        <p class="text-danger">Out of stock</p>
                     </div>
+                    <% } %>
                   </div>
                 </div>
               </div>
               <% }); %>
           </div>
         </div>
-
       </div>
-
     </div>
 
+<!-- Instagram Section Begin -->
+<div class=" insta-banner mx-auto banner-container p-0 " style="height: 300px; width:70%">
+  <div class="insta-img">
+    <img src="/static/images/image-grid-5.webp" alt="" style="height: 300px;">
+  </div>
+  <div class="banner-text ">
+    <h1 class="fw-bold text-dark mx-5 ">Instagram <br /></h1>
+
+    <div class="insta-text">
+      <h2 class="fw-bold text-dark mx-5">Follow us on social media for more discount & promotions</h2>
+    </div>
+
+    <h3 class="text-secondary mx-5">#E-World_official</h3>
+    <div class="banner-button">
+      <a href="#" class=" mx-5 text-decoration-none text-dark fw-bold">Discover </a>
+    </div>
+  </div>
+   
+
+
+    <div class="banner-image ">
+      <img style="width: 100%; height: 300px;"
+        src="static/images/image-grid-3.jpg" />
+     
+    </div>
+
+
+</div>
+<!-- Instagram Section End -->
+
+
+<!-- card section -->
+<div class="container my-5 py-5">
+  <div class="row m-auto">
+    <div class="col ms-5"><div class="card text-bg-light mb-3 py-4" style="max-width: 15rem; height: 14rem;">
+    <div class="card-body  px-5 ">
+      <h5 class="card-title"><i class="fa-solid fa-truck-fast"></i></h5>
+      <h5 class="card-text fw-bold">Free Shipping</h5>
+      <p>Order above 5000</p>
+    </div>
+  </div></div>
+    <div class="col ms-5 "><div class="card text-bg-light mb-3 py-4" style="max-width: 15rem; height: 14rem;">
+    <div class="card-body  px-5">
+      <h5 class="card-title"><i class="fa-solid fa-shield-halved"></i></h5>
+      <h5 class="card-text fw-bold">Secure Payments</h5>
+      <p>Secured by Stripe</p>
+    </div>
+  </div></div>
+    <div class="col ms-5"><div class="card text-bg-light mb-3 py-4" style="max-width: 15rem; height: 14rem;">
+    <div class="card-body  px-5 ">
+      <h5 class="card-title"><i class="fa-solid fa-phone fa-xl"></i></h5>
+      <h5 class="card-text fw-bold">24/7  Support</h5>
+      <p>Phone and Email support</p>
+    </div>
+  </div></div>
+    <div class="col ms-5"><div class="card text-bg-light mb-3 py-4" style="max-width: 15rem; height: 14rem;">
+    <div class="card-body px-5  ">
+      <h5 class="card-title"><i class="fa-solid fa-money-bill fa-xl"></i></h5>
+      <h5 class="card-text fw-bold">Money-Back</h5>
+      <p>30 days Guarantte</p>
+    </div>
+  </div></div>
+  </div>
+</div>
+<!-- card section -->
+
   </div>
   </div>
+</div>
+
+
+
+
+
+  <%-include('../partials/userFooter') %>
+
+
 
   <script>
     document.querySelectorAll('.add-to-cart-button').forEach(button => {
@@ -121,19 +360,13 @@
           method: 'POST',
           success: function (response) {
 
-            // alert('Product added to cart');
-            // swal("", "Product is added to cart", "success");
-            // updateCartQuantity();
-            if (response) {
-              console.log('response',response);
+            if (response.success) {
               const count = document.getElementById("cartQuantity");
-              const currentCount = parseInt(count.innerHTML);
-
-              // Update the cart quantity on the page
-              count.innerHTML = currentCount + response.cartQuantity;
-
-              console.log('count here',count.innerHTML);
+              count.innerHTML =  response.cartQuantity;
               swal("", "Product is added to cart", "success");
+            }else if(response.message){
+            
+              swal("", "Product is already in cart");
             }
           },
           error: function (error) {
@@ -143,14 +376,62 @@
       });
     });
 
+ 
+
+
+    function addtoWishlist(productId){
+     
+      $.ajax({
+          url: '/addtowishlist/' + productId,
+          method: 'POST',
+          success: function (response) {
+            if(response){
+            
+              swal("","product already exists")
+            }
+            if (response.success) {
+            
+              swal("", "Product is added to wishlist", "success");
+            }
+          },
+          error: function (error) {
+            console.log('Error adding product to wishlist : ', error);
+          }
+        });
+    }
 
 
 
-    
+    // animation
 
-    // function updateCartQuantity() {
-    //   console.log("i got here cart quantity");
-    //   var cartquantity = <%- cartQuantity %>
-    // }
+    document.addEventListener("DOMContentLoaded", function () {
+    // Options for the Intersection Observer
+    var options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5 // Adjust this threshold based on your preference
+    };
+
+    // Callback function to handle the intersection
+    function handleIntersection(entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          // Element is in view
+          entry.target.classList.add("banner__item--visible");
+          entry.target.classList.add("zoom-in"); 
+          observer.unobserve(entry.target); // Stop observing once it's in view
+        }
+      });
+    }
+
+    // Create an Intersection Observer with the callback and options
+    var observer = new IntersectionObserver(handleIntersection, options);
+
+    // Observe each banner item
+    var bannerItems = document.querySelectorAll(".banner__item");
+    bannerItems.forEach(function (item) {
+      observer.observe(item);
+    });
+  });
   </script>
 

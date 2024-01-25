@@ -1,0 +1,165 @@
+<%-include('../partials/profileheader') %>
+
+
+  <body>
+    <div class="container-fluid shadow w-50 py-5 my-5">
+      <div class="product-content  my-2 d-flex ">
+        <div class="container signup-details">
+          <h2 class="fw-bold text-dark text-center pt-2">Edit User Details</h2>
+          <form action="/edit-bio" method="post" id="form">
+            <div class="form-group input-control input-box pt-2 ">
+                <!-- name -->
+              <label for="username"> Full Name:</label>
+              <input type="text" id="username" name="username" value="<%=user.userName %>" class="form-control" >
+              <div class="error"></div>
+            </div>
+            <!-- phone number -->
+            <div class="form-group input-control input-box pt-2 ">
+                <label for="phone_number">Phone Number : </label>
+                <input type="text" id="phone_number" name="phone_number" value="<%=user.phone_number %>"  class="form-control" >
+                <div class="error"></div>
+              </div>
+            <!-- email -->
+            <div class="form-group input-control input-box pt-2 ">
+                <label for="email">email : </label>
+                <input type="text" id="email" name="email" value="<%=user.email %>"  class="form-control" >
+                <div class="error"></div>
+              </div>
+            <!--password -->
+            <div class="form-group input-control input-box pt-2 ">
+                <label for="password" class="text-dark">password: </label>
+                <input type="password" id="password" name="password" class="form-control" >
+                <div class="error"></div>
+              </div>
+             <!-- confirm password -->
+            <div class="form-group input-control input-box pt-2 ">
+                <label for="password" class="text-dark">confirm password: </label>
+                <input type="password" id="confirmPass" name="confirmPass" class="form-control" >
+                <div class="error"></div>
+              </div>
+              
+              <div class="form-group input-control input-box pt-3 pb-5 ">
+                <button class="btn1 shadow text-white"  type="submit" >submit</button>
+              </div>
+              
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+
+
+const form = document.getElementById('form');
+
+form.addEventListener('submit', (e) => {
+    if (!verification()) {
+        e.preventDefault(); 
+    }
+});
+
+
+    //  client side form validation
+
+    const setError = (element, message) => {
+    const inputControl = element.parentElement;
+    const errorDisplay = inputControl.querySelector('.error');
+    errorDisplay.innerText = message;
+    inputControl.classList.add('error');
+    inputControl.classList.remove('success');
+};
+
+const setSuccess = (element) => {
+    const inputControl = element.parentElement;
+    const errorDisplay = inputControl.querySelector('.error');
+    errorDisplay.innerText = '';
+    inputControl.classList.remove('error');
+    inputControl.classList.add('success');
+};
+
+const isValidEmail = (email) => {
+    const re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return re.test(email);
+};
+    function verification() {
+
+        const username = document.getElementById('username');
+        const phone_number = document.getElementById('phone_number')
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const confirmPass = document.getElementById('confirmPass')
+
+        const usernameValue = username.value.trim();
+        const phonenumberValue = phone_number.value.trim()
+        const emailValue = email.value.trim();
+    const passwordValue = password.value.trim();
+    const confirmpassValue = confirmPass.value.trim();
+    
+    let hasErrors = false; // Flag to track if there are validation errors
+const phoneRegex = /^\d{10}$/;
+
+    if (usernameValue === '' ||usernameValue === " " ||usernameValue === "-"||usernameValue ==="_" ) {
+        setError(username, 'Username is required');
+        hasErrors = true;
+    } else {
+        setSuccess(username);
+    }
+    if(phonenumberValue === ''){
+        setError(phone_number,'phone number is required')
+        hasErrors= true;
+    } else if (!phoneRegex.test(phonenumberValue)){
+        setError(phone_number,'Enter a valid phone number')
+        hasErrors= true;
+    }else {
+        setSuccess(phone_number);
+    }
+    
+    if (emailValue === '') {
+        setError(email, 'Email is required');
+        hasErrors = true;
+    } else if (!isValidEmail(emailValue)) {
+        setError(email, 'Enter a valid email address');
+        hasErrors = true;
+    } else {
+        setSuccess(email);
+    }
+    
+    if (passwordValue === ''|| passwordValue.length < 8 ) {
+        setError(password, 'password should be minimum 8 characters');
+        hasErrors = true;
+    }
+   if (confirmpassValue === '' ) {
+        setError(confirmPass, 'password is required');
+        hasErrors = true;
+    }
+    if(passwordValue !== confirmpassValue){
+        setError(confirmPass,'confirm your password')
+        hasErrors = true;
+    }
+
+     else {
+        setSuccess(password);
+    }
+   return !hasErrors;
+
+    }
+
+
+
+    
+
+
+
+
+
+  </script>
+
+</body>

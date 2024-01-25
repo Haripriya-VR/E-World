@@ -1,10 +1,16 @@
 <%-include('../partials/profileheader') %>
+<style>
+    @media (max-width: 991px) {
+  img{
+    display: none;
+  }
+    }
+  </style>
 <body>
 
-    
 <div class="container-fluid main-content">
     <div class="  signup-content   my-5  d-flex" >
-        <img src="/static/images/signup-image.png" height="600" width="500" alt="img">
+        <img src="/static/images/signup-image.png" width="50%" alt="img">
     <div class="container signup-details">
       <h2 class="fw-bold text-white text-center py-4">sign up</h2>
       <form action="/signup" method="post" id="form">
@@ -57,3 +63,5 @@
 </body>
 
 </html>
+
+

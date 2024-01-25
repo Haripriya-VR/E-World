@@ -30,6 +30,7 @@ const isValidEmail = (email) => {
     const re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return re.test(email);
 };
+const phoneRegex = /^\d{10}$/;
 
 const validateInputs = () => {
     const username = document.getElementById('username');
@@ -46,7 +47,7 @@ const validateInputs = () => {
     
     let hasErrors = false; // Flag to track if there are validation errors
 
-    if (usernameValue === '') {
+    if (usernameValue === '' ||usernameValue === " " ||usernameValue === "-"||usernameValue ==="_" ) {
         setError(username, 'Username is required');
         hasErrors = true;
     } else {
@@ -55,7 +56,10 @@ const validateInputs = () => {
     if(phonenumberValue === ''){
         setError(phone_number,'phone number is required')
         hasErrors= true;
-    } else {
+    } else if (!phoneRegex.test(phonenumberValue)){
+        setError(phone_number,'Enter a valid phone number')
+        hasErrors= true;
+    }else {
         setSuccess(phone_number);
     }
     
@@ -69,8 +73,12 @@ const validateInputs = () => {
         setSuccess(email);
     }
     
-    if (passwordValue === '') {
-        setError(password, 'Password is required');
+    if (passwordValue === '' ) {
+        setError(password, 'password is required');
+        hasErrors = true;
+    }
+    else if(passwordValue.length < 8){
+        setError(password, 'password must be upto 8 characters');
         hasErrors = true;
     }
     if(confirmpassValue === ''){
@@ -78,7 +86,7 @@ const validateInputs = () => {
         hasErrors = true;
     }
     else if(passwordValue !== confirmpassValue){
-        setError(password,'Password error')
+        setError(password,'confirm the password ')
         hasErrors = true;
     }
      else {
@@ -87,6 +95,8 @@ const validateInputs = () => {
 
     return !hasErrors; 
 };
+
+
 
 
 

@@ -1,7 +1,7 @@
 const products = require('../models/products');
 const User = require('../models/users')
 const Cart = require('../models/cart');
-
+const couponSchema = require('../models/coupon')
 
 
 // Get the cart page
@@ -19,7 +19,7 @@ const cart_get = async (req, res) => {
 
     res.render('users/cart', { products, cartQuantity, cart, login, cartTotal: cartTotal })
   } catch (error) {
-    console.log('error ocuuured in  cart_get', error);
+    res.render('./error/500')
   }
 }
 
@@ -29,23 +29,23 @@ const addtocart = async (req, res) => {
     const product_id = req.params.id
     const userId = await User.findOne({ email: req.session.email }).select('_id');
 
-    // here checking weather there is a cart for the user if exists we are updating the cart and if there is no cart then we are creating new cart
     let cart = await Cart.findOne({ userId: userId })
     if (cart !== null) {
       const existingCart = cart.items.find((item) =>
         item.productId.equals(product_id)
       );
       if (existingCart) {
-        existingCart.quantity += 1;
+
+        const message = 'product is already exists in the cart'
+        return res.json({ message })
+        // existingCart.quantity += 1;
       } else {
         cart.items.push({ productId: product_id, quantity: 1 })
-        
-
       }
-      
+
       await cart.save();
       const cartQuantity = cart ? cart.items.length : 0;
-      res.json({ success: true,cartQuantity, message: "Item added to the cart" });
+      res.json({ success: true, cartQuantity, message: "Item added to the cart" });
     } else {
       const cart = new Cart({
         userId: userId,
@@ -57,8 +57,7 @@ const addtocart = async (req, res) => {
     }
 
   } catch (error) {
-    console.log('error ocuuured in  cart_get', error);
-    res.status(500).json({ success: false, error: "Failed to add product to the cart" });
+    res.render('./error/500')
 
   }
 }
@@ -87,11 +86,9 @@ const updateQuantity = async (req, res) => {
     }
 
     productInCart.quantity = quantity;
-    console.log('productInCart.quantity', productInCart.quantity);
 
     // Access the quantity property inside the productId object
     const productQuantity = productInCart.productId.quantity;
-    console.log('productQuantity', productQuantity);
 
     let totalPrice = 0;
     cart.items.forEach((item) => {
@@ -124,11 +121,9 @@ const delete_cart = async (req, res) => {
       res.status(404).json({ success: false, message: 'Product not found in the cart' });
     }
   } catch (error) {
-    console.log('Error in delete_cart:', error);
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
+    res.render('./error/500')
   }
 };
-
 
 module.exports = {
   cart_get,
@@ -136,3 +131,4 @@ module.exports = {
   updateQuantity,
   delete_cart,
 }
+
