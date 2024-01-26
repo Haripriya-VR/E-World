@@ -140,6 +140,7 @@
           alert("Please select an address and payment method.");
           return;
         }
+        const couponCode = document.getElementById('coupon-input').value;
 
         const addressId = addressRadio.value;
         const paymentMethod = paymentMethodRadio.value;
@@ -151,7 +152,7 @@
           $.ajax({                                                                                                                     
             url: '/place-order',
             method: 'post',
-            data: { addressId, paymentMethod,walletAmount, orderStatus,dicountTotal },
+            data: { addressId, paymentMethod,walletAmount,couponCode, orderStatus,dicountTotal },
             success: (response) => {
               if (response.codSuccess) {
                 window.location.href = '/order-confirmed';
@@ -236,7 +237,7 @@ subTotal: subTotalValue,
 },
 success: function (response) {
 if (response.success) {
-  document.getElementById('couponDiscount').innerText = '₹'+ response.discounted.discountAmount;
+  document.getElementById('couponDiscount').innerText = '₹'+ response.discounted.discountAmount.toFixed(2);
   
  document.getElementById('dicountTotal').innerText = "₹" + response.discounted.discountedTotal;
 

@@ -14,7 +14,7 @@ const Coupon = require('../models/coupon')
 
 const placeorder_post = async (req, res) => {
   try {
-    let { paymentMethod, addressId, walletAmount, orderStatus, dicountTotal } = req.body
+    let { paymentMethod, addressId,couponCode, walletAmount, orderStatus, dicountTotal } = req.body
     const login = req.session.login;
     const userId = await User.findOne({ email: req.session.email }).select('_id');
     const cart = await Cart.findOne({ userId: userId }).populate('items.productId');
@@ -22,6 +22,13 @@ const placeorder_post = async (req, res) => {
 
     // const Address = users.address;
     const orderAdd = await Address.find({ _id: addressId })
+
+   const couponUser = await Coupon.findOneAndUpdate(
+      { name: couponCode },
+      { $push: { users: userId } },
+      { new: true }
+    );
+
 
     let walletBalance
     if (walletAmount) {
@@ -116,6 +123,8 @@ const placeorder_post = async (req, res) => {
       const payment = await paymentHelper.razorpayPayment(ordered._id, amountPayable)
       return res.json({ payment: payment })
     }
+
+
 
     res.json({ success: true, dicountTotal, cartproducts, login })
 

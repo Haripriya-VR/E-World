@@ -171,11 +171,7 @@ const applycoupon = async (req, res) => {
 
           res.json({ success: true ,discounted});
 
-          await coupon.findOneAndUpdate(
-            { name: couponCode },
-            { $push: { users: userId } },
-            { new: true }
-          );
+        
         }
 
       } else {

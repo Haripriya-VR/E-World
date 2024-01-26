@@ -71,9 +71,9 @@
       document.getElementById('error').style.display = 'none'
       document.getElementById('addcatBtn').disabled = false;
       const categoryname = document.getElementById('categoryname').value
-      const categoryRegex = /^[a-zA-Z0-9]+(?:[_-][a-zA-Z0-9]+)*$/;
+      
 
-      if (!categoryRegex.test(categoryname)) {
+      if (categoryname === " ") {
         document.getElementById('error').style.display = 'block';
         document.getElementById('error').innerHTML = "Enter a valid category name";
         document.getElementById('addcatBtn').disabled = true;
