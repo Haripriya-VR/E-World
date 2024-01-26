@@ -121,7 +121,7 @@
                 </td>
                 <td><a href="/profile-orderedproducts/<%= item._id %>" class="btn btn-info">view
                     products</a>
-                  <% if (item.orderStatus=='Cancelled' ) { %>
+                  <% if (item.orderStatus=='Cancelled' ||item.orderStatus=='Returned'  ) { %>
 
                    
                     <% } else { %>

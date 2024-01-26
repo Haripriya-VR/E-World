@@ -23,15 +23,13 @@
                 <tr>
                   <td>
                   
-                      <!-- <img src="\<%= data.images %>" alt="Product Image" style="width: 50px; height: 50px;"> -->
+                      
                       <img src="\<%= data.productId.images[0] %>" alt="Product Image" style="width: 50px; height: 50px;">
                   </td>
                     <td><%= data.productId.name %></td>
                     <td><%= data.quantity %></td>
                     <td id="totalPrice"><%= data.quantity * data.productId.price %></td>
-                    <!-- <td>
-                        <a href="/cancel-orderedproduct/<%= orders._id %>/<%= data._id %>" class="btn btn-danger">Cancel order</a>
-                    </td> -->
+                   
 
                 </tr>
             <% }); %>
