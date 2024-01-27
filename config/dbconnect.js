@@ -1,14 +1,25 @@
-const mongoose = require("mongoose");
-require('dotenv').config();
-const databaseURL = process.env.DATABASE_URL
+// const mongoose = require("mongoose");
+// require('dotenv').config();
+// const databaseURL = process.env.DATABASE_URL
+// console.log(databaseURL);
+// mongoose.connect(databaseURL) 
+// .then((res)=>{
+//     console.log('connected');
+// }) 
+// .catch((err)=>{
+//     console.log('error occured during establishing the connection',err);
+// })
 
-mongoose.connect(databaseURL)
+// module.exports = mongoose;
+
+const mongoose = require("mongoose");
+
+mongoose.connect('mongodb://0.0.0.0:27017/E-world',)
 .then((res)=>{
-    console.log('connected'); 
+    
 }) 
 .catch((err)=>{
     console.log('error occured during establishing the connection',err);
 })
 
 module.exports = mongoose;
-
