@@ -31,7 +31,7 @@ const addtowishlist = async (req, res) => {
 
     const productId = req.params.id;
     const email = req.session.email;
-
+ 
     const userDocument = await User.findOne({ email: email }, '_id');
     const userId = userDocument ? userDocument._id : null;
 
@@ -94,7 +94,7 @@ const removeProducts = async (req, res) => {
 }
 
 module.exports = {
-  wishlist_get,
+  wishlist_get, 
   addtowishlist,
   removeProducts
 }

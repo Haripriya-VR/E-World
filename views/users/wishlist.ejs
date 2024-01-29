@@ -19,7 +19,13 @@
           </tr>
         </thead>
         <tbody>
-          <% if (Wishlist.products?.length> 0) { %>
+          <% if (!Wishlist) { %>
+           <tr>
+            <td colspan="6">No item found in Wishlist</td>
+           </tr>
+          <% } else{ %>
+          
+          <% if (Wishlist.products?.length > 0) { %>
           <% Wishlist.products.forEach(product => { %>
           <tr>
             <th></th>
@@ -50,6 +56,7 @@
               <td colspan="6">No item found in Wishlist</td>
             </tr>
             <% } %>
+            <%  } %>
         </tbody>
       </table>
 </div>

@@ -16,11 +16,13 @@ const mailTransporter = nodemailer.createTransport({
     },
 });
 
-mailTransporter.verify((error, success) => {
-    if (error) {
-        res.render('./error/500')
-    } 
-});
+// mailTransporter.verify((error, success) => {
+//     if (error) {
+//         res.render('./error/500')
+//     }else{
+
+//     }
+// });
 
 const sendEmail = async (mailOptions) => {
     try {

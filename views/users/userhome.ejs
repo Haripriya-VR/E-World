@@ -362,6 +362,7 @@
             if (response.success) {
               const count = document.getElementById("cartQuantity");
               count.innerHTML =  response.cartQuantity;
+              console.log("response.cartQuantity",response.cartQuantity);
               swal("", "Product is added to cart", "success");
             }else if(response.message){
             

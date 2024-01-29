@@ -22,4 +22,4 @@ module.exports = mongoose;
 //     console.log('error occured during establishing the connection',err);
 // })
 
-// module.exports = mongoose;
+// module.exports = mongoose; 

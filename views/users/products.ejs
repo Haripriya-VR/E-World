@@ -76,17 +76,13 @@
           </div>
 
           <ul id="PriceList" class="list-unstyled class ps-4 fs--1" style="display: none;">
-            <!-- <li> <a class="dropdown-item" href="/products?price=a-z">
-                <p class="m-0">Lowest to Highest </p>
-              </a>
-            </li> -->
 
-            <!-- try here -->
+           
             <li class="dropdown-item"> 
               <p class="m-0"  onclick="acending()">Lowest to Highest </p>
               <input type="text"  id="catId" style="display: none;">
           </li>
-            <!-- end here -->
+            
             <hr>
             <li><a class="dropdown-item" >
                 <p class="m-0"  onclick="decenting()">Highest to Lowest </p>
@@ -110,7 +106,7 @@
                 <div class="col-md-3 mb-4 product-container" id="productContainer_<%= index %>">
                   <div class="card card-products h-100">
                     <div class="card-body d-flex flex-column shadow">
-                      <a href="/product-details/<%= product._id %>">
+                      <a href="/product-details/<%= product._id %>" id="productDetailsLink_<%= index %>">
                         <img id="productImg_<%= index %>" src="/<%= product.images[0] %>"
                           class="card-img-top product-image" alt="Product Image">
                       </a>
@@ -225,11 +221,6 @@ function categories(categoryId) {
  
          const value = document.getElementById('catId').value = response.categoryId
            
- 
-
-    
-
-
         // Hide all product containers
         $('.product-container').hide();
 
@@ -239,6 +230,7 @@ function categories(categoryId) {
         // Assuming response.products is an array of products
         response.products.forEach(function (product, index) {
           // Create unique IDs or use classes for each product
+          var productDetailsLinkId = 'productDetailsLink_' + index;
           var productImgId = 'productImg_' + index;
           var productNameId = 'productName_' + index;
           var productPriceId = 'productPrice_' + index;
@@ -250,6 +242,9 @@ function categories(categoryId) {
           document.getElementById(productImgId).src = '/' + product.images[0];
           document.getElementById(productNameId).innerText = product.name;
           document.getElementById(productPriceId).innerText = 'Price: Rs ' + product.price;
+
+          // Update the product details link
+          document.getElementById(productDetailsLinkId).href = '/product-details/' + product._id;
          
         });
 
@@ -261,24 +256,51 @@ function categories(categoryId) {
 
 }
 
-
-
-//  search products 
-
+// search products
 function searchProducts() {
-  const searchInput = document.getElementById('searchInput').value
+  const searchInput = document.getElementById('searchInput').value;
+
   $.ajax({
     url: '/products/search',
     method: 'POST',
     data: {
-      searchInput
+      searchInput,
     },
     success: function (response) {
-      categoryId = response.catId
-      categories(categoryId)
-    }
-});
+  
+      const catId = response.catId;
+      const Searchproduct = response.Searchproduct;
+
+      // Hide all product containers
+      $('.product-container').hide();
+
+      // Highlight the selected category
+      $('#' + catId).css('font-weight', '600');
+
+        Searchproduct.forEach(function (product, index) {
+          // Create unique IDs or use classes for each product
+          var productDetailsLinkId = 'productDetailsLink_' + index;
+          var productImgId = 'productImg_' + index;
+          var productNameId = 'productName_' + index;
+          var productPriceId = 'productPrice_' + index;
+          var productContainerId = 'productContainer_' + index;
+
+          $('#' + productContainerId).show();
+
+          // Update the corresponding elements
+          document.getElementById(productImgId).src = '/' + product.images[0];
+          document.getElementById(productNameId).innerText = product.name;
+          document.getElementById(productPriceId).innerText =  'Price: Rs ' + product.price;
+           // Update the product details link
+           document.getElementById(productDetailsLinkId).href = '/product-details/' + product._id;
+
+        });
+    },
+  });
 }
+
+
+
 
 
 function acending() {
@@ -299,6 +321,7 @@ function acending() {
         // Assuming response.products is an array of products
         response.products.forEach(function (product, index) {
           // Create unique IDs or use classes for each product
+          var productDetailsLinkId = 'productDetailsLink_' + index;
           var productImgId = 'productImg_' + index;
           var productNameId = 'productName_' + index;
           var productPriceId = 'productPrice_' + index;
@@ -310,6 +333,8 @@ function acending() {
           document.getElementById(productImgId).src = '/' + product.images[0];
           document.getElementById(productNameId).innerText = product.name;
           document.getElementById(productPriceId).innerText = 'Price: Rs ' + product.price;
+           // Update the product details link
+           document.getElementById(productDetailsLinkId).href = '/product-details/' + product._id;
          
         });
     
@@ -337,6 +362,7 @@ function decenting() {
         // Assuming response.products is an array of products
         response.products.forEach(function (product, index) {
           // Create unique IDs or use classes for each product
+          var productDetailsLinkId = 'productDetailsLink_' + index;
           var productImgId = 'productImg_' + index;
           var productNameId = 'productName_' + index;
           var productPriceId = 'productPrice_' + index;
@@ -348,6 +374,9 @@ function decenting() {
           document.getElementById(productImgId).src = '/' + product.images[0];
           document.getElementById(productNameId).innerText = product.name;
           document.getElementById(productPriceId).innerText = 'Price: Rs ' + product.price;
+          // Update the product details link
+          document.getElementById(productDetailsLinkId).href = '/product-details/' + product._id;
+         
          
         });
     

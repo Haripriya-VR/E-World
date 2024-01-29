@@ -328,18 +328,13 @@ const searchProducts = async (req, res) => {
     const selectedCategory = await product.findOne({ name: searchInput })
       .populate('category')
     const catId = selectedCategory.category._id
+    const Searchproduct = await product.find({name: searchInput})
 
-    res.json({ success: true, catId })
+    res.json({ success: true, catId ,Searchproduct })
   } catch (error) {
     res.render('./error/500')
   }
 }
-
-
-
-
-
-
 
 
 // single product detail page get
