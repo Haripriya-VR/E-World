@@ -11,7 +11,7 @@ img{
       <div class="signup-content my-5 d-flex">
         <img src="/static/images/signup-image.png" width="50%" alt="img">
         <div class="container signup-details">
-          <h2 class="fw-bold text-white text-center py-4">Admin Login</h2>
+          <h2 class="fw-bold text-white text-center py-4 pt-5">Admin Login</h2>
           <% if (errmsg && errmsg.length> 0) { %>
             <span id="err" style="color: red;">
               <%= errmsg %>
@@ -29,7 +29,7 @@ img{
                   <div id="error" class="error"></div>
                 </div>
 
-                <div class="form-group input-control input-box">
+                <div class="form-group input-control input-box py-4">
                   <button class="btn1 shadow text-white" onclick="validation()" type="submit" value="Sign In">Log
                     in</button>
                 </div>

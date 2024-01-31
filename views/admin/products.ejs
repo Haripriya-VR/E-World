@@ -1,4 +1,9 @@
 <%-include('../partials/adminheader') %>
+<style>
+  .main-content{
+      min-height: 700px;
+  }
+</style>
 
   <section>
     <div class="row px-0 m-0">
@@ -32,8 +37,8 @@
           </ul>
         </div>
       </div>
-      <div class="col " >
-        <div class="container d-flex ">
+      <div class="col main-content " >
+        <div class="container  d-flex ">
           <div class="d-flex mt-3"><h2>Product Manegement</h2></div>
           <div class="search-content-admin d-flex m-auto border  ">
             <form action="/admin/products/search" method="post">
