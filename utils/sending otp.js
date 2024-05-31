@@ -16,6 +16,14 @@ const mailTransporter = nodemailer.createTransport({
     },
 });
 
+// const mailTransporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: AUTH_EMAIL,
+//         pass: AUTH_PASS
+//     }
+// });
+
 // mailTransporter.verify((error, success) => {
 //     if (error) {
 //         res.render('./error/500')
@@ -24,7 +32,7 @@ const mailTransporter = nodemailer.createTransport({
 //     }
 // });
 
-const sendEmail = async (mailOptions) => {
+const sendEmail = async (mailOptions,res) => {
     try {
         await mailTransporter.sendMail(mailOptions);
         return;

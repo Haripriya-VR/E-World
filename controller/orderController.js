@@ -164,7 +164,7 @@ const verifyPayment = async (req, res) => {
 const orderconfirm_get = async (req, res) => {
   try {
     const login = req.session.login;
-    const userId = await User.findOne({ email: req.session.email }).select('_id');
+    const userId = await User.findOne({ email: req.session.email }).select('_id'); 
     const cart = await Cart.findOne({ userId: userId }).populate('items.productId')
 
     const cartTotal = cart.items.reduce((total, current) => total + current.quantity * current.productId.price, 0);

@@ -1,6 +1,6 @@
 const OTPverification = require("../models/otpverification");
-const userControl = require('../controller/userController')
-const user = require("../models/users")
+const userControl = require('../controller/userController');
+const user = require("../models/users");
 const nodemailer = require('nodemailer')
 const bcrypt = require("bcrypt");
 const otp = require('../utils/otp-generator')
@@ -9,7 +9,7 @@ const { sendEmail } = require('../utils/sending otp')
 const { AUTH_EMAIL } = process.env;
 
 // senting the otp  to email
-const sent_otp = async (email) => {
+const sent_otp = async (email,res) => {
     try { 
         if (!(email)) {
             throw Error("provide values for email,subject,message")
@@ -25,11 +25,12 @@ const sent_otp = async (email) => {
             html: `<p>Hello new user use the this otp to verify your email to continue </p><p style="color:tomato;font-size:25px;letter-spacing:2px;">
             <b>${generatedOTP}</b></p><p>OTP will expire in<b> 10 minute(s)</b>.</p>`
         }
+        // await sendEmail(mailOptions);
         await sendEmail(mailOptions);
-
         // save the otp record
 
         const hashedData = await bcrypt.hash(generatedOTP, 10);
+        
         const currentDate = new Date();
 
         const newDate = new Date(currentDate.getTime() + 2 * 60 * 1000);
@@ -45,7 +46,7 @@ const sent_otp = async (email) => {
 
 
     } catch (error) {
-        res.render('./error/500')
+       res.render('./error/500')
     }
 }
 
@@ -117,9 +118,10 @@ const otp_verify = async (req, res) => {
 
 const otpSender = async (req, res) => {
     try {
+      
         const email = req.session.data.email;
         const createdOTP = await sent_otp(email)
-        res.status(200).redirect("/users/otpverify")
+        res.redirect("/users/otpverify")
     } catch (error) {
         res.redirect('/users/signup')
     }
