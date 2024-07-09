@@ -46,6 +46,7 @@ const sent_otp = async (email,res) => {
 
 
     } catch (error) {
+        console.log('error in sent-otp',error);
        res.render('./error/500')
     }
 }
@@ -60,6 +61,7 @@ try {
         res.render('./users/otpverify')
     }
 } catch (error) {
+    console.log('error in otp_get',error);
     res.render('./error/500')
 }
 }
@@ -108,6 +110,7 @@ const otp_verify = async (req, res) => {
             }
 
         } catch (err) {
+            console.log('error in otp-verify',err);
             res.render('./error/500')
            
         }
@@ -123,6 +126,7 @@ const otpSender = async (req, res) => {
         const createdOTP = await sent_otp(email)
         res.redirect("/users/otpverify")
     } catch (error) {
+        console.log('error in otp-sender',error);
         res.redirect('/users/signup')
     }
 }
