@@ -4,7 +4,7 @@ const databaseURL = process.env.DATABASE_URL
 console.log(databaseURL);
 mongoose.connect("mongodb+srv://hpvr80343:1234@e-world.tgp2bd1.mongodb.net/?retryWrites=true&w=majority", {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true, 
 })
     .then((res) => {
         console.log('connected');
